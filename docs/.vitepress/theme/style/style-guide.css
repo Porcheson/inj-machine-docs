@@ -1,0 +1,171 @@
+/* 风格指南和图标系统 */
+
+/* 统一排版格式 */
+:root {
+  --vp-font-family-base: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --vp-font-family-mono: 'Consolas', 'Monaco', 'Courier New', monospace;
+  
+  --vp-h1-font-size: 2rem;
+  --vp-h2-font-size: 1.5rem;
+  --vp-h3-font-size: 1.25rem;
+  --vp-h4-font-size: 1.125rem;
+  --vp-h5-font-size: 1rem;
+  --vp-h6-font-size: 0.875rem;
+  
+  --vp-spacing-unit: 0.25rem;
+  --vp-spacing-xs: calc(var(--vp-spacing-unit) * 1);
+  --vp-spacing-sm: calc(var(--vp-spacing-unit) * 2);
+  --vp-spacing-md: calc(var(--vp-spacing-unit) * 4);
+  --vp-spacing-lg: calc(var(--vp-spacing-unit) * 8);
+  --vp-spacing-xl: calc(var(--vp-spacing-unit) * 16);
+}
+
+/* 标题样式 */
+.VPDoc h1 {
+  margin-bottom: var(--vp-spacing-lg);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.VPDoc h2 {
+  margin-top: var(--vp-spacing-xl);
+  margin-bottom: var(--vp-spacing-md);
+  font-weight: 600;
+  border-bottom: 1px solid var(--vp-c-divider);
+  padding-bottom: var(--vp-spacing-xs);
+}
+
+.VPDoc h3 {
+  margin-top: var(--vp-spacing-lg);
+  margin-bottom: var(--vp-spacing-sm);
+  font-weight: 600;
+}
+
+/* 段落样式 */
+.VPDoc p {
+  margin-bottom: var(--vp-spacing-md);
+  line-height: 1.6;
+}
+
+/* 列表样式 */
+.VPDoc ul,
+.VPDoc ol {
+  margin-bottom: var(--vp-spacing-md);
+  padding-left: var(--vp-spacing-lg);
+}
+
+.VPDoc li {
+  margin-bottom: var(--vp-spacing-xs);
+  line-height: 1.5;
+}
+
+/* 代码块样式 */
+.VPDoc pre {
+  margin-bottom: var(--vp-spacing-md);
+  border-radius: var(--vp-border-radius);
+  overflow: auto;
+}
+
+/* 表格样式 */
+.VPDoc table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: var(--vp-spacing-md);
+}
+
+.VPDoc th,
+.VPDoc td {
+  border: 1px solid var(--vp-c-divider);
+  padding: var(--vp-spacing-sm);
+  text-align: left;
+}
+
+.VPDoc th {
+  background-color: var(--vp-c-bg-alt);
+  font-weight: 600;
+}
+
+/* 图标样式 */
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  border-radius: 4px;
+  background-color: var(--vp-c-brand-soft);
+  color: var(--vp-c-brand-1);
+}
+
+.icon-sm {
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
+}
+
+/* 信息卡片 */
+.info-card {
+  background-color: var(--vp-c-bg-alt);
+  border-left: 4px solid var(--vp-c-brand-1);
+  padding: var(--vp-spacing-md);
+  margin-bottom: var(--vp-spacing-md);
+  border-radius: 0 var(--vp-border-radius) var(--vp-border-radius) 0;
+}
+
+/* 警告卡片 */
+.warning-card {
+  background-color: rgba(250, 173, 20, 0.1);
+  border-left: 4px solid #faad14;
+  padding: var(--vp-spacing-md);
+  margin-bottom: var(--vp-spacing-md);
+  border-radius: 0 var(--vp-border-radius) var(--vp-border-radius) 0;
+}
+
+/* 危险卡片 */
+.danger-card {
+  background-color: rgba(255, 77, 79, 0.1);
+  border-left: 4px solid #ff4d4f;
+  padding: var(--vp-spacing-md);
+  margin-bottom: var(--vp-spacing-md);
+  border-radius: 0 var(--vp-border-radius) var(--vp-border-radius) 0;
+}
+
+/* 成功卡片 */
+.success-card {
+  background-color: rgba(82, 196, 26, 0.1);
+  border-left: 4px solid #52c41a;
+  padding: var(--vp-spacing-md);
+  margin-bottom: var(--vp-spacing-md);
+  border-radius: 0 var(--vp-border-radius) var(--vp-border-radius) 0;
+}
+
+/* 功能区块 */
+.feature-block {
+  margin-bottom: var(--vp-spacing-lg);
+  padding: var(--vp-spacing-md);
+  background-color: var(--vp-c-bg);
+  border: 1px solid var(--vp-c-divider);
+  border-radius: var(--vp-border-radius);
+  transition: all 0.3s ease;
+}
+
+.feature-block:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .VPDoc h1 {
+    font-size: 1.75rem;
+  }
+  
+  .VPDoc h2 {
+    font-size: 1.375rem;
+  }
+  
+  .VPDoc h3 {
+    font-size: 1.125rem;
+  }
+}
