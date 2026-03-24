@@ -1,0 +1,106 @@
+/* 响应式布局优化 */
+
+/* 2K及以上分辨率屏幕 */
+@media screen and (min-width: 2000px) {
+  /* 调整文档内容最大宽度 */
+  .VPDoc .content-container {
+    max-width: 1600px !important;
+  }
+  
+  /* 调整侧边栏宽度 */
+  .VPSidebar {
+    width: 320px !important;
+  }
+  
+  /* 调整主内容区域宽度 */
+  .VPContent {
+    max-width: calc(100% - 320px) !important;
+  }
+  
+  /* 调整代码块宽度 */
+  .VPCodeBlock {
+    max-width: 100% !important;
+  }
+  
+  /* 调整图片最大宽度 */
+  .main img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+  
+  /* 调整表格宽度 */
+  .VPTable {
+    max-width: 100% !important;
+  }
+}
+
+/* 4K分辨率屏幕 */
+@media screen and (min-width: 3840px) {
+  /* 调整文档内容最大宽度 */
+  .VPDoc .content-container {
+    max-width: 2400px !important;
+  }
+  
+  /* 调整侧边栏宽度 */
+  .VPSidebar {
+    width: 400px !important;
+  }
+  
+  /* 调整主内容区域宽度 */
+  .VPContent {
+    max-width: calc(100% - 400px) !important;
+  }
+  
+  /* 调整字体大小 */
+  :root {
+    --vp-font-size-1: 2rem !important;
+    --vp-font-size-2: 1.75rem !important;
+    --vp-font-size-3: 1.5rem !important;
+    --vp-font-size-4: 1.25rem !important;
+    --vp-font-size-5: 1rem !important;
+    --vp-font-size-6: 0.875rem !important;
+  }
+}
+
+/* 移动端优化 */
+@media screen and (max-width: 768px) {
+  /* 调整图片最大宽度 */
+  .main img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+  
+  /* 调整表格宽度 */
+  .VPTable {
+    max-width: 100% !important;
+    overflow-x: auto !important;
+  }
+}
+
+/* 图片自适应优化 */
+.main img {
+  object-fit: contain !important;
+  display: block !important;
+  margin: 0 auto !important;
+}
+
+/* 消除两侧空白 */
+.VPApp {
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.VPDoc {
+  max-width: 100% !important;
+}
+
+.VPDoc .content-container {
+  max-width: 100% !important;
+  padding: 0 40px !important;
+}
+
+/* 调整侧边栏与内容之间的间距 */
+.VPContent {
+  padding-left: 40px !important;
+}

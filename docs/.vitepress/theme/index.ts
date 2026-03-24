@@ -5,6 +5,7 @@ import { NProgress } from 'nprogress-v2/dist/index.js'
 // 样式
 import 'nprogress-v2/dist/index.css'
 import './style/index.css' //自定义样式
+import './style/responsive.css' //响应式布局优化
 
 import { h } from 'vue' // h函数
 import { useData , useRoute } from 'vitepress'
