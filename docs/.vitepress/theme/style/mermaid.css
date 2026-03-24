@@ -1,0 +1,201 @@
+/* Mermaid 图表样式 - 适配浅色和深色主题 */
+.mermaid {
+  background-color: transparent !important;
+}
+
+/* 浅色主题节点样式 */
+:root {
+  --mermaid-step-bg: #e6f7ff;
+  --mermaid-step-border: #1890ff;
+  --mermaid-complete-bg: #f6ffed;
+  --mermaid-complete-border: #52c41a;
+  --mermaid-decision-bg: #fffbe6;
+  --mermaid-decision-border: #fa8c16;
+  --mermaid-loop-bg: #f3e5f5;
+  --mermaid-loop-border: #9c27b0;
+  --mermaid-error-bg: #fff2f0;
+  --mermaid-error-border: #ff4d4f;
+  --mermaid-physical-bg: #fff2f0;
+  --mermaid-physical-border: #ff4d4f;
+  --mermaid-process-bg: #e6f7ff;
+  --mermaid-process-border: #1890ff;
+  --mermaid-data-bg: #f3e5f5;
+  --mermaid-data-border: #9c27b0;
+  --mermaid-app-bg: #e6f7ff;
+  --mermaid-app-border: #1890ff;
+  --mermaid-control-bg: #f6ffed;
+  --mermaid-control-border: #52c41a;
+  --mermaid-driver-bg: #fffbe6;
+  --mermaid-driver-border: #fa8c16;
+  --mermaid-text-color: #000000;
+}
+
+/* 深色主题节点样式 */
+html.dark {
+  --mermaid-step-bg: #0c3b5e;
+  --mermaid-step-border: #177ddc;
+  --mermaid-complete-bg: #1a3d1a;
+  --mermaid-complete-border: #49aa19;
+  --mermaid-decision-bg: #3d2e0a;
+  --mermaid-decision-border: #fa8c16;
+  --mermaid-loop-bg: #2d1f3d;
+  --mermaid-loop-border: #b87fce;
+  --mermaid-error-bg: #3d1f1f;
+  --mermaid-error-border: #ff7875;
+  --mermaid-physical-bg: #3d1f1f;
+  --mermaid-physical-border: #ff7875;
+  --mermaid-process-bg: #0c3b5e;
+  --mermaid-process-border: #177ddc;
+  --mermaid-data-bg: #2d1f3d;
+  --mermaid-data-border: #b87fce;
+  --mermaid-app-bg: #0c3b5e;
+  --mermaid-app-border: #177ddc;
+  --mermaid-control-bg: #1a3d1a;
+  --mermaid-control-border: #49aa19;
+  --mermaid-driver-bg: #3d2e0a;
+  --mermaid-driver-border: #fa8c16;
+  --mermaid-text-color: #ffffff;
+}
+
+/* 基础节点样式 - 适用于所有节点 */
+.mermaid .node rect,
+.mermaid .node polygon,
+.mermaid .node ellipse,
+.mermaid .node circle {
+  transition: fill 0.3s, stroke 0.3s !important;
+}
+
+/* step 样式 */
+.mermaid .node.step rect,
+.mermaid .node.step polygon,
+.mermaid .nodeStep rect,
+.mermaid .nodeStep polygon {
+  fill: var(--mermaid-step-bg) !important;
+  stroke: var(--mermaid-step-border) !important;
+  stroke-width: 2px !important;
+}
+
+/* complete 样式 */
+.mermaid .node.complete rect,
+.mermaid .node.complete polygon,
+.mermaid .nodeComplete rect,
+.mermaid .nodeComplete polygon {
+  fill: var(--mermaid-complete-bg) !important;
+  stroke: var(--mermaid-complete-border) !important;
+  stroke-width: 2px !important;
+}
+
+/* decision 样式 */
+.mermaid .node.decision rect,
+.mermaid .node.decision polygon,
+.mermaid .node.decision diamond,
+.mermaid .nodeDecision rect,
+.mermaid .nodeDecision polygon,
+.mermaid .nodeDecision diamond {
+  fill: var(--mermaid-decision-bg) !important;
+  stroke: var(--mermaid-decision-border) !important;
+  stroke-width: 2px !important;
+}
+
+/* loop 样式 */
+.mermaid .node.loop rect,
+.mermaid .node.loop polygon,
+.mermaid .nodeLoop rect,
+.mermaid .nodeLoop polygon {
+  fill: var(--mermaid-loop-bg) !important;
+  stroke: var(--mermaid-loop-border) !important;
+  stroke-width: 2px !important;
+}
+
+/* error 样式 */
+.mermaid .node.error rect,
+.mermaid .node.error polygon,
+.mermaid .nodeError rect,
+.mermaid .nodeError polygon {
+  fill: var(--mermaid-error-bg) !important;
+  stroke: var(--mermaid-error-border) !important;
+  stroke-width: 2px !important;
+}
+
+/* physical 样式 */
+.mermaid .node.physical rect,
+.mermaid .node.physical polygon,
+.mermaid .nodePhysical rect,
+.mermaid .nodePhysical polygon {
+  fill: var(--mermaid-physical-bg) !important;
+  stroke: var(--mermaid-physical-border) !important;
+  stroke-width: 2px !important;
+}
+
+/* process 样式 */
+.mermaid .node.process rect,
+.mermaid .node.process polygon,
+.mermaid .nodeProcess rect,
+.mermaid .nodeProcess polygon {
+  fill: var(--mermaid-process-bg) !important;
+  stroke: var(--mermaid-process-border) !important;
+  stroke-width: 2px !important;
+}
+
+/* data 样式 */
+.mermaid .node.data rect,
+.mermaid .node.data polygon,
+.mermaid .nodeData rect,
+.mermaid .nodeData polygon {
+  fill: var(--mermaid-data-bg) !important;
+  stroke: var(--mermaid-data-border) !important;
+  stroke-width: 2px !important;
+}
+
+/* app 样式 */
+.mermaid .node.app rect,
+.mermaid .node.app polygon,
+.mermaid .nodeApp rect,
+.mermaid .nodeApp polygon {
+  fill: var(--mermaid-app-bg) !important;
+  stroke: var(--mermaid-app-border) !important;
+  stroke-width: 2px !important;
+}
+
+/* control 样式 */
+.mermaid .node.control rect,
+.mermaid .node.control polygon,
+.mermaid .nodeControl rect,
+.mermaid .nodeControl polygon {
+  fill: var(--mermaid-control-bg) !important;
+  stroke: var(--mermaid-control-border) !important;
+  stroke-width: 2px !important;
+}
+
+/* driver 样式 */
+.mermaid .node.driver rect,
+.mermaid .node.driver polygon,
+.mermaid .nodeDriver rect,
+.mermaid .nodeDriver polygon {
+  fill: var(--mermaid-driver-bg) !important;
+  stroke: var(--mermaid-driver-border) !important;
+  stroke-width: 2px !important;
+}
+
+/* 节点文本颜色 */
+.mermaid .node text,
+.mermaid .node.step text,
+.mermaid .node.complete text,
+.mermaid .node.decision text,
+.mermaid .node.loop text,
+.mermaid .node.error text,
+.mermaid .node.physical text,
+.mermaid .node.process text,
+.mermaid .node.data text,
+.mermaid .node.app text,
+.mermaid .node.control text,
+.mermaid .node.driver text {
+  fill: var(--mermaid-text-color) !important;
+}
+
+/* subgraph 内部节点样式 */
+.mermaid .node rect,
+.mermaid .subgraph rect {
+  fill: var(--mermaid-step-bg) !important;
+  stroke: var(--mermaid-step-border) !important;
+}
