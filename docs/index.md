@@ -6,6 +6,9 @@ hero:
   name: "宝捷信立式注塑机"
   text: "技术文档与功能整理"
   tagline: 专业、高效、可靠的注塑机控制解决方案
+  image:
+    src: /logo.png
+    alt: 宝捷信立式注塑机Logo
   actions:
     - theme: brand
       text: 功能文档
