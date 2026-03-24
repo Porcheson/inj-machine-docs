@@ -18,12 +18,6 @@ export default withMermaid({
 
   markdown: {
     lineNumbers: true,
-    shiki: {
-      theme: {
-        light: 'github-light',
-        dark: 'github-dark'
-      }
-    }
   },
   lastUpdated: {
     text: '最后更新于',
