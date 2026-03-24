@@ -27,6 +27,8 @@
   --mermaid-control-border: #52c41a;
   --mermaid-driver-bg: #fffbe6;
   --mermaid-driver-border: #fa8c16;
+  --mermaid-state-bg: #e6f7ff;
+  --mermaid-state-border: #1890ff;
   --mermaid-text-color: #000000;
 }
 
@@ -54,6 +56,8 @@ html.dark {
   --mermaid-control-border: #49aa19;
   --mermaid-driver-bg: #3d2e0a;
   --mermaid-driver-border: #fa8c16;
+  --mermaid-state-bg: #0c3b5e;
+  --mermaid-state-border: #177ddc;
   --mermaid-text-color: #ffffff;
 }
 
@@ -114,6 +118,16 @@ html.dark {
 .mermaid .nodeError polygon {
   fill: var(--mermaid-error-bg) !important;
   stroke: var(--mermaid-error-border) !important;
+  stroke-width: 2px !important;
+}
+
+/* state 样式 */
+.mermaid .node.state rect,
+.mermaid .node.state polygon,
+.mermaid .nodeState rect,
+.mermaid .nodeState polygon {
+  fill: var(--mermaid-state-bg) !important;
+  stroke: var(--mermaid-state-border) !important;
   stroke-width: 2px !important;
 }
 
@@ -184,6 +198,7 @@ html.dark {
 .mermaid .node.decision text,
 .mermaid .node.loop text,
 .mermaid .node.error text,
+.mermaid .node.state text,
 .mermaid .node.physical text,
 .mermaid .node.process text,
 .mermaid .node.data text,
