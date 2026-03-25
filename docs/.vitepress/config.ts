@@ -12,10 +12,6 @@ export default withMermaid({
     // 内联关键CSS，实现首屏优先显示
     ['style', {}, `
       :root {
-        --vp-c-bg: #1a1a1a;
-        --vp-c-text-1: #ffffff;
-        --vp-c-text-2: #a0a0a0;
-        --vp-c-divider: #333333;
         --vp-font-family-base: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif;
         --vp-font-size-md: 16px;
         --vp-home-hero-padding-top: 80px;
@@ -28,8 +24,6 @@ export default withMermaid({
         font-family: var(--vp-font-family-base);
         font-size: var(--vp-font-size-md);
         line-height: 1.6;
-        color: var(--vp-c-text-1);
-        background-color: var(--vp-c-bg);
       }
       .VPHomeHero {
         padding-top: var(--vp-home-hero-padding-top);
@@ -41,13 +35,11 @@ export default withMermaid({
         font-weight: 800;
         margin-bottom: 16px;
         line-height: 1.1;
-        color: var(--vp-c-text-1);
         text-align: center;
         letter-spacing: -0.02em;
       }
       .VPHomeHero .tagline {
         font-size: 16px;
-        color: var(--vp-c-text-2);
         margin-bottom: 32px;
         max-width: 600px;
         margin-left: auto;
@@ -68,8 +60,6 @@ export default withMermaid({
         margin: 0 auto;
       }
       .VPHomeFeatures .item {
-        background: #242424;
-        border: 1px solid var(--vp-c-divider);
         border-radius: 12px;
         padding: 20px;
         min-height: 140px;
@@ -87,7 +77,7 @@ export default withMermaid({
     ['link', { rel: 'preload', href: '/assets/app.js', as: 'script', defer: true }],
     ['link', { rel: 'preload', href: '/assets/style.css', as: 'style', onload: 'this.onload=null;this.rel="stylesheet"' }]
   ],
-  appearance: 'dark',
+  appearance: 'toggle',
   sitemap: {
     hostname: 'http://localhost:5174'
   },
