@@ -1,10 +1,10 @@
 import {
   __commonJS
-} from "./chunk-DC5AMYBS.js";
+} from "./chunk-BUSYA2B4.js";
 
-// node_modules/.pnpm/dayjs@1.11.20/node_modules/dayjs/dayjs.min.js
+// node_modules/dayjs/dayjs.min.js
 var require_dayjs_min = __commonJS({
-  "node_modules/.pnpm/dayjs@1.11.20/node_modules/dayjs/dayjs.min.js"(exports, module) {
+  "node_modules/dayjs/dayjs.min.js"(exports, module) {
     !(function(t, e) {
       "object" == typeof exports && "undefined" != typeof module ? module.exports = e() : "function" == typeof define && define.amd ? define(e) : (t = "undefined" != typeof globalThis ? globalThis : t || self).dayjs = e();
     })(exports, (function() {
