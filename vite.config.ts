@@ -23,7 +23,10 @@ export default defineConfig({
     terserOptions: {
       compress: {
         drop_console: true,
-        drop_debugger: true
+        drop_debugger: true,
+        // 更激进的压缩选项
+        passes: 2,
+        keep_fnames: false
       }
     },
     // 启用CSS代码分割
@@ -34,9 +37,32 @@ export default defineConfig({
         manualChunks: {
           // 分割大型依赖
           vendor: ['vue'],
-          mermaid: ['mermaid']
-        }
+          mermaid: ['mermaid'],
+          search: ['vitepress/dist/client/theme-default/composables/search'],
+          // 分割图片和媒体资源
+          media: ['**/*.png', '**/*.jpg', '**/*.svg']
+        },
+        // 启用长期缓存
+        hashFunction: 'sha256',
+        // 优化chunk大小
+        maxAssetSize: 400000, // 400KB
+        // 输出更详细的构建信息
+        generatedCode: 'es2015'
       }
+    },
+    // 启用sourcemap（可选，用于调试）
+    sourcemap: false,
+    // 自定义输出目录
+    outDir: 'docs/.vitepress/dist',
+    // 清空输出目录
+    emptyOutDir: true
+  },
+  // 配置CDN
+  resolve: {
+    alias: {
+      // 可以在这里配置CDN别名
+      '@': '/docs',
+      '@assets': '/docs/.vitepress/dist/assets'
     }
   }
 })

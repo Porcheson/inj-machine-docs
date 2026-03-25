@@ -1,3 +1,4 @@
+/* 导入所有样式文件 */
 @import './var.css';
 @import './vp-code.css';
 @import './vp-code-title.css';
@@ -6,3 +7,81 @@
 @import './hero-logo.css';
 @import './rainbow.css';
 @import './mermaid.css';
+
+/* 首屏内容优先显示样式 */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--vp-font-family-base);
+  font-size: var(--vp-font-size-md);
+  line-height: 1.6;
+  color: var(--vp-c-text-1);
+  background-color: var(--vp-c-bg);
+}
+
+.VPHomeHero {
+  padding-top: var(--vp-home-hero-padding-top);
+  padding-bottom: var(--vp-home-hero-padding-bottom);
+  text-align: center;
+}
+
+.VPHomeHero h1 {
+  font-size: 56px;
+  font-weight: 800;
+  margin-bottom: 16px;
+  line-height: 1.1;
+  color: var(--vp-c-text-1);
+  text-align: center;
+  letter-spacing: -0.02em;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.VPHomeHero .tagline {
+  font-size: 16px;
+  color: var(--vp-c-text-2);
+  margin-bottom: 32px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  font-weight: 400;
+  text-align: center;
+  line-height: 1.5;
+  opacity: 0.8;
+}
+
+.VPHomeFeatures {
+  padding: var(--vp-home-features-padding);
+}
+
+.VPHomeFeatures .items {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.VPHomeFeatures .item {
+  background: linear-gradient(135deg, var(--vp-c-bg-1) 0%, var(--vp-c-bg-2) 100%);
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 12px;
+  padding: 20px;
+  transition: all var(--vp-transition-normal);
+  min-height: 140px;
+  min-width: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 图片懒加载 */
+img.lazy {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+img {
+  transition: opacity 0.3s ease-in-out;
+}

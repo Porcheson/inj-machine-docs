@@ -8,13 +8,104 @@ export default withMermaid({
   description: "宝捷信立式注塑机技术文档与功能整理",
   titleTemplate: ':title - 宝捷信立式注塑机',
   head: [
-    ['link', { rel: 'icon', href: '/favicon.svg' }]
+    ['link', { rel: 'icon', href: '/favicon.svg' }],
+    // 内联关键CSS，实现首屏优先显示
+    ['style', {}, `
+      :root {
+        --vp-c-bg: #1a1a1a;
+        --vp-c-text-1: #ffffff;
+        --vp-c-text-2: #a0a0a0;
+        --vp-c-divider: #333333;
+        --vp-font-family-base: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif;
+        --vp-font-size-md: 16px;
+        --vp-home-hero-padding-top: 80px;
+        --vp-home-hero-padding-bottom: 48px;
+        --vp-home-features-padding: 64px 0;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: var(--vp-font-family-base);
+        font-size: var(--vp-font-size-md);
+        line-height: 1.6;
+        color: var(--vp-c-text-1);
+        background-color: var(--vp-c-bg);
+      }
+      .VPHomeHero {
+        padding-top: var(--vp-home-hero-padding-top);
+        padding-bottom: var(--vp-home-hero-padding-bottom);
+        text-align: center;
+      }
+      .VPHomeHero h1 {
+        font-size: 56px;
+        font-weight: 800;
+        margin-bottom: 16px;
+        line-height: 1.1;
+        color: var(--vp-c-text-1);
+        text-align: center;
+        letter-spacing: -0.02em;
+      }
+      .VPHomeHero .tagline {
+        font-size: 16px;
+        color: var(--vp-c-text-2);
+        margin-bottom: 32px;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+        font-weight: 400;
+        text-align: center;
+        line-height: 1.5;
+        opacity: 0.8;
+      }
+      .VPHomeFeatures {
+        padding: var(--vp-home-features-padding);
+      }
+      .VPHomeFeatures .items {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 32px;
+        max-width: 1600px;
+        margin: 0 auto;
+      }
+      .VPHomeFeatures .item {
+        background: #242424;
+        border: 1px solid var(--vp-c-divider);
+        border-radius: 12px;
+        padding: 20px;
+        min-height: 140px;
+        min-width: 400px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      img {
+        max-width: 100%;
+        height: auto;
+      }
+    `],
+    // 预加载关键资源
+    ['link', { rel: 'preload', href: '/assets/app.js', as: 'script', defer: true }],
+    ['link', { rel: 'preload', href: '/assets/style.css', as: 'style', onload: 'this.onload=null;this.rel="stylesheet"' }]
   ],
   appearance: 'dark',
   sitemap: {
     hostname: 'http://localhost:5174'
   },
   cleanUrls: true,
+  // 配置构建选项
+  build: {
+    minify: true,
+    cssCodeSplit: true,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['vue'],
+          mermaid: ['mermaid'],
+          search: ['vitepress/dist/client/theme-default/composables/search']
+        }
+      }
+    }
+  },
 
   markdown: {
     lineNumbers: true,
@@ -38,7 +129,24 @@ export default withMermaid({
       text: '最后更新'
     },
     search: {
-      provider: 'none'
+      provider: 'local',
+      options: {
+        translations: {
+          button: {
+            buttonText: '搜索文档',
+            buttonAriaLabel: '搜索文档'
+          },
+          modal: {
+            noResultsText: '无法找到相关结果',
+            resetButtonTitle: '清除查询条件',
+            footer: {
+              selectText: '选择',
+              navigateText: '切换',
+              closeText: '关闭'
+            }
+          }
+        }
+      }
     },
     nav: [
       { text: '首页', link: '/' },
