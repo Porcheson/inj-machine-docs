@@ -409,6 +409,54 @@ code, pre, .vp-code {
   }
 }
 
+/* 2K及以上高分辨率显示器优化 */
+@media (min-width: 1920px) {
+  /* 调整左侧导航栏位置 */
+  .VPLayout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 40px;
+  }
+  
+  /* 增加内容区域宽度 */
+  .VPDoc {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  
+  /* 调整侧边栏位置 */
+  .VPSidebar {
+    padding: 0 20px;
+  }
+  
+  /* 优化内容区域布局 */
+  .content-container {
+    max-width: 100%;
+  }
+  
+  /* 调整表格布局 */
+  .VPDoc table {
+    font-size: 16px;
+  }
+  
+  .VPDoc table th,
+  .VPDoc table td {
+    padding: 12px 16px;
+  }
+  
+  /* 优化代码块 */
+  .VPCodeBlock {
+    font-size: 14px;
+  }
+  
+  /* 优化图片显示 */
+  .rendered-md img {
+    max-width: 90%;
+    margin: 0 auto;
+    display: block;
+  }
+}
+
 /* 横屏适配 */
 @media (orientation: landscape) and (max-width: 767px) {
   .VPFeatures .items {

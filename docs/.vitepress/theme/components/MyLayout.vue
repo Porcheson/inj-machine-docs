@@ -245,7 +245,7 @@ watch(() => route.path, () => {
 
 <template>
   <DefaultTheme.Layout v-bind="$attrs">
-    <template #doc-after>
+    <template #doc-before>
       <ArticleMetadata />
     </template>
     <template #doc-footer-before>
