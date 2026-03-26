@@ -5,7 +5,7 @@ import markdownItTaskCheckbox from 'markdown-it-task-checkbox'
 import { groupIconMdPlugin, groupIconVitePlugin, localIconLoader } from 'vitepress-plugin-group-icons'
 import { MermaidMarkdown, MermaidPlugin } from 'vitepress-plugin-mermaid';
 
-import { usePosts } from './theme/untils/permalink';
+const { usePosts } = require('./theme/untils/permalink');
 
 export default defineConfig(async () => {
   const { rewrites } = await usePosts();

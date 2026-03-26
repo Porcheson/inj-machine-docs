@@ -1,15 +1,15 @@
 // 导入必要的库
-import matter from 'gray-matter'; // 用于解析和操作Markdown文件的frontmatter
-import fg from 'fast-glob';      // 快速文件系统匹配库
-import fs from 'fs/promises';    // Node.js文件系统Promise API
-import path from 'path';         // 路径处理库
+const matter = require('gray-matter'); // 用于解析和操作Markdown文件的frontmatter
+const fg = require('fast-glob');      // 快速文件系统匹配库
+const fs = require('fs/promises');    // Node.js文件系统Promise API
+const path = require('path');         // 路径处理库
 
 /**
  * 生成指定长度的随机字符串
  * @param {number} length - 需要生成的字符串长度
  * @returns {string} 由0-9和a-f组成的随机字符串
  */
-export const generateString = (length: number) => {
+const generateString = (length) => {
   const charset = '0123456789abcdef'; // 可用的字符集
   let randomCode = ''; // 初始化结果字符串
 
@@ -27,7 +27,7 @@ export const generateString = (length: number) => {
  * @param {string} content - Markdown内容
  * @returns {string} 提取的标题，如果没有找到则返回空字符串
  */
-const extractTitleFromContent = (content: string): string => {
+const extractTitleFromContent = (content) => {
   // 匹配一级标题的正则表达式 (支持#前后可能有空格的情况)
   const h1Regex = /^\s*#\s+(.+?)\s*$/m;
   const match = content.match(h1Regex);
@@ -41,7 +41,7 @@ const extractTitleFromContent = (content: string): string => {
  * @param {string} options.baseDir - 基础目录，默认为'docs'
  * @returns {Promise<Object>} 包含重写规则的对象
  */
-export const usePosts = async ({
+const usePosts = async ({
   srcDir = 'permalink',  // 默认源目录为'permalink'
   baseDir = 'docs'   // 默认基础目录为'docs'
 } = {}) => {
@@ -54,7 +54,7 @@ export const usePosts = async ({
     })).sort(); // 按字母顺序排序
 
     // 创建一个映射，存储所有文件的permalink和title
-    const postsMap: Record<string, { permalink: string; title: string }> = {};
+    const postsMap = {};
 
     // 第一遍：收集所有文件的基本信息
     await Promise.all(
@@ -124,4 +124,10 @@ export const usePosts = async ({
     console.error(e); // 捕获并打印错误
     return { rewrites }; // 即使出错也返回可能部分完成的重写规则
   }
+};
+
+// 导出模块
+module.exports = {
+  generateString,
+  usePosts
 };
