@@ -1,5 +1,13 @@
 /* var.css - 统一的色彩和样式变量体系 */
 
+/* 全局CSS变量 - 用于响应式布局控制 */
+:root {
+  /* 覆盖VitePress默认布局宽度 */
+  --vp-layout-content-width: 1600px;
+  --vp-sidebar-width: 240px;
+  --vp-aside-width: 280px;
+}
+
 /* 品牌色彩系统 */
 :root {
   /* 主品牌色 */
@@ -251,7 +259,9 @@ code, pre, .vp-code {
 .VPDoc {
   font-family: var(--vp-font-family-base);
   max-width: 100%;
+  width: 100%;
   padding: var(--vp-space-lg);
+  box-sizing: border-box;
 }
 
 @media (min-width: 768px) {
@@ -381,11 +391,14 @@ code, pre, .vp-code {
     --vp-font-size-3xl: 26px;
     --vp-font-size-4xl: 30px;
   }
-  
+
   .VPDoc {
+    max-width: 100%;
+    width: 100%;
     padding: var(--vp-space-lg);
+    box-sizing: border-box;
   }
-  
+
   .VPFeatures .items,
   .features .items {
     grid-template-columns: repeat(2, 1fr);
@@ -393,13 +406,16 @@ code, pre, .vp-code {
   }
 }
 
-/* 桌面设备 */
+/* 桌面设备 - 1024px及以上 */
 @media (min-width: 1024px) {
   .VPDoc {
-    max-width: 1000px;
-    margin: 0 auto;
+    max-width: 1400px !important;
+    margin: 0 auto !important;
+    padding: 0 48px !important;
+    width: 100%;
+    box-sizing: border-box;
   }
-  
+
   .VPFeatures .items,
   .features .items {
     grid-template-columns: repeat(3, 1fr);
@@ -407,177 +423,25 @@ code, pre, .vp-code {
   }
 }
 
-/* 大屏设备 */
+/* 大屏设备 - 1280px及以上 */
 @media (min-width: 1280px) {
   .VPDoc {
-    max-width: 1200px;
-  }
-  
-  .VPFeatures .items,
-  .features .items {
-    grid-template-columns: repeat(3, 1fr);
+    max-width: 1600px !important;
+    margin: 0 auto !important;
+    padding: 0 64px !important;
+    width: 100%;
+    box-sizing: border-box;
   }
 }
 
-/* 2K及以上高分辨率显示器优化 */
+/* 2K及以上高分辨率显示器优化 - 1920px及以上 */
 @media (min-width: 1920px) {
-  /* 调整主布局结构 */
-  .VPApp {
-    max-width: 100vw;
-  }
-  
-  /* 调整左侧导航栏位置 */
-  .VPLayout {
-    display: grid;
-    grid-template-columns: 240px 1fr;
-    gap: 0;
-    max-width: 100vw;
-  }
-  
-  /* 调整侧边栏 */
-  .VPSidebar {
-    padding: 24px 16px;
-    width: 240px;
-    position: relative;
-    left: 0;
-  }
-  
-  /* 增加内容区域宽度 */
-  .VPContent {
-    flex: 1;
-    max-width: 100%;
-    margin: 0;
-  }
-  
-  /* 关键：调整内容容器宽度 */
-  .content-container {
-    max-width: 1600px;
-    margin: 0 auto;
-    padding: 0 32px;
-  }
-  
-  /* 增加文档内容宽度 */
   .VPDoc {
-    max-width: 1600px;
-    margin: 0 auto;
-    padding: 32px;
-  }
-  
-  /* 调整主内容区域 */
-  .main {
-    max-width: 100%;
-  }
-  
-  /* 调整表格布局 */
-  .VPDoc table {
-    font-size: 16px;
-    min-width: 100%;
-  }
-  
-  .VPDoc table th,
-  .VPDoc table td {
-    padding: 14px 20px;
-  }
-  
-  /* 优化代码块 */
-  .VPCodeBlock {
-    font-size: 14px;
-    margin: 24px 0;
-  }
-  
-  /* 优化图片显示 */
-  .rendered-md img {
-    max-width: 95%;
-    margin: 0 auto;
-    display: block;
-  }
-  
-  /* 优化字体大小 */
-  :root {
-    --vp-font-size-md: 16px;
-    --vp-font-size-lg: 18px;
-    --vp-font-size-xl: 20px;
-  }
-  
-  /* 优化标题间距 */
-  .VPDoc h1 {
-    font-size: 36px;
-    margin-bottom: 32px;
-  }
-  
-  .VPDoc h2 {
-    font-size: 28px;
-    margin-top: 40px;
-    margin-bottom: 20px;
-  }
-  
-  .VPDoc h3 {
-    font-size: 22px;
-    margin-top: 32px;
-    margin-bottom: 16px;
-  }
-  
-  /* 优化段落间距 */
-  .VPDoc p {
-    font-size: 16px;
-    line-height: 1.8;
-    margin-bottom: 20px;
-  }
-  
-  /* 优化列表间距 */
-  .VPDoc ul, .VPDoc ol {
-    margin-bottom: 20px;
-    padding-left: 32px;
-  }
-  
-  .VPDoc li {
-    margin-bottom: 8px;
-    line-height: 1.8;
-  }
-  
-  /* 调整右侧边栏（如果存在） */
-  .VPSidebarRight {
-    width: 300px;
-    padding: 24px 16px;
-  }
-  
-  /* VitePress 特定布局优化 */
-  .VPContent > .content {
-    max-width: 1600px;
-    margin: 0 auto;
-  }
-  
-  .VPContent .main {
-    max-width: 100%;
-  }
-  
-  /* 调整文档容器 */
-  .VPDoc {
+    max-width: 1600px !important;
+    margin: 0 auto !important;
+    padding: 0 80px !important;
     width: 100%;
-    max-width: 1600px;
-  }
-  
-  /* 调整内容区域的最大宽度 */
-  .content-container {
-    width: 100%;
-  }
-  
-  /* 确保内容区域充分利用空间 */
-  .VPContent {
-    padding: 0;
-  }
-  
-  /* 调整页面边距 */
-  .VPDoc {
-    margin-left: auto;
-    margin-right: auto;
-  }
-  
-  /* 保持3列卡片布局 */
-  .VPFeatures .items,
-  .features .items {
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--vp-space-xl);
+    box-sizing: border-box;
   }
 }
 

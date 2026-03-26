@@ -18,6 +18,7 @@ export default withMermaid({
         --vp-home-hero-padding-top: 80px;
         --vp-home-hero-padding-bottom: 48px;
         --vp-home-features-padding: 64px 0;
+        --vp-layout-max-width: 1600px;
       }
       body {
         margin: 0;
