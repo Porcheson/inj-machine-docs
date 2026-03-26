@@ -34,13 +34,13 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: 24
-          cache: npm
+          cache: pnpm
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Install dependencies
-        run: npm install
+        run: pnpm install
       - name: Build with VitePress
-        run: npm run docs:build
+        run: pnpm run docs:build
       - name: List build output
         run: ls -la docs/.vitepress/dist
       - name: Check directory structure
