@@ -42,7 +42,7 @@ const extractTitleFromContent = (content: string): string => {
  * @returns {Promise<Object>} 包含重写规则的对象
  */
 export const usePosts = async ({
-  srcDir = 'permalink',  // 默认源目录为'permalink'
+  srcDir = '.',  // 默认源目录为根目录
   baseDir = 'docs'   // 默认基础目录为'docs'
 } = {}) => {
   const rewrites = {}; // 初始化重写规则对象
@@ -71,7 +71,7 @@ export const usePosts = async ({
 
         // 生成或使用现有的permalink
         if (!data.permalink) {
-          data.permalink = `/${srcDir}/${generateString(6)}`;
+          data.permalink = srcDir === '.' ? `/${generateString(6)}` : `/${srcDir}/${generateString(6)}`;
         }
 
         // 存储到映射中
