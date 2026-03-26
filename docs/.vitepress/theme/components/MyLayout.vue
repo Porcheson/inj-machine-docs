@@ -1,14 +1,13 @@
 <!-- .vitepress/theme/MyLayout.vue -->
 
 <script setup lang="ts">
-import { useData, useRoute } from 'vitepress'
+import { useData } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 import backtotop from "./backtotop.vue"
 import ArticleMetadata from "./ArticleMetadata.vue"
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted } from 'vue'
 
 const { isDark } = useData()
-const route = useRoute()
 
 // 简化的主题切换
 const toggleTheme = () => {
@@ -237,10 +236,7 @@ onMounted(() => {
   }
 })
 
-// 监听路由变化，重新加载特效
-watch(() => route.path, () => {
-  // 路由变化时不重新加载，保持特效持续运行
-})
+
 </script>
 
 <template>

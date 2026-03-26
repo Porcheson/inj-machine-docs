@@ -50,6 +50,9 @@ site/
 *.tmp
 *.temp
 
+# VitePress 缓存
+docs/.vitepress/cache/
+
 # 排除父目录文件
 ../
 ../*

@@ -6,15 +6,20 @@ export default defineConfig({
     port: 5174,
     open: false,
     cors: true,
-    // 禁用自动打开浏览器
+    // 修复 WebSocket 连接错误 - 完全禁用 HMR
+    hmr: false,
     // 优化开发服务器性能
     watch: {
       ignored: ['**/node_modules/**', '**/dist/**', '**/docs/.vitepress/cache/**']
+    },
+    // 优化服务器响应
+    fs: {
+      strict: false
     }
   },
   optimizeDeps: {
     // 预构建依赖，减少初始加载时间
-    include: ['vue', 'dayjs', 'medium-zoom', 'mermaid'],
+    include: ['vue', 'dayjs', 'medium-zoom', 'mermaid', '@braintree/sanitize-url', 'khroma', 'cytoscape', 'cytoscape-cose-bilkent', 'd3-scale', 'd3-selection', 'd3-transition', 'd3-format', 'd3-interpolate', 'd3-quadtree', 'lodash-es'],
     exclude: ['vitepress']
   },
   build: {

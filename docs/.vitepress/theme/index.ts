@@ -4,8 +4,8 @@ import DefaultTheme from 'vitepress/theme'
 import './style/index.css' //自定义样式
 
 import { h } from 'vue' // h函数
-import { useData , useRoute } from 'vitepress'
-import { onMounted, watch, nextTick } from 'vue';
+import { useData } from 'vitepress'
+import { onMounted } from 'vue';
 
 
 // 组件
@@ -44,7 +44,6 @@ export default {
   
   // 延迟加载非关键功能
   setup() {
-    const route = useRoute();
     
     // 图片懒加载
     const initLazyLoad = () => {
@@ -82,14 +81,6 @@ export default {
       // 延迟执行 zoom 功能
       setTimeout(initZoom, 1000);
     });
-    
-    watch(
-      () => route.path,
-      () => nextTick(() => {
-        initLazyLoad();
-        setTimeout(initZoom, 500);
-      })
-    );
 
   },
 

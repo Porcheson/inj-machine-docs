@@ -152,6 +152,23 @@ export default defineConfig({
     ssr: {
       noExternal: ['mermaid'],
     },
+    // 优化服务器配置
+    server: {
+      hmr: false,
+      watch: {
+        usePolling: false
+      }
+    },
+    // 优化构建配置
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            'mermaid': ['mermaid']
+          }
+        }
+      }
+    }
   },
 
   lastUpdated: true, //此配置不会立即生效，需git提交后爬取时间戳，没有安装git本地报错可以先注释
