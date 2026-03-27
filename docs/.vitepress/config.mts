@@ -180,12 +180,6 @@ export default defineConfig({
         ],
       },
 
-      //编辑链接
-      editLink: {
-        pattern: 'https://github.com/wuhanheibao01/vertical-injection-machine-docs/edit/main/docs/:path', // 改成自己的仓库
-        text: '在GitHub编辑本页',
-      },
-
       //最后更新时间
       lastUpdated: {
         text: '最后更新时间',
