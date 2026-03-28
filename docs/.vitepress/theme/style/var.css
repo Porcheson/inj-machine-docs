@@ -582,6 +582,10 @@ code, pre, .vp-code {
   .VPHomeFeatures .items {
     grid-template-columns: 1fr;
   }
+
+  .VPHomeFeatures .item {
+    min-width: 0;
+  }
 }
 
 .VPHomeFeatures .item {
