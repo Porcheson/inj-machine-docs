@@ -40,6 +40,10 @@ features:
   - icon: 💡
     title: 技术支持
     details: 专业的技术支持和培训，确保设备正常运行和持续优化
+  - icon: 📥
+    title: Luban 下载
+    details: Luban（基于Beremiz）编程工具下载
+    link: https://pan.baidu.com/s/134uu-YZ_6xK4FOy7PBDbXw?pwd=por1
 
 ---
 
