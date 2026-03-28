@@ -66,10 +66,28 @@ export default withMermaid({
         border-radius: 12px;
         padding: 20px;
         min-height: 140px;
-        min-width: 400px;
+        min-width: 300px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+      }
+      /* 响应式布局 */
+      @media (max-width: 768px) {
+        .VPHomeFeatures .items {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+        .VPHomeFeatures .item {
+          min-width: auto;
+        }
+        .VPHomeHero h1 {
+          font-size: 32px;
+        }
+      }
+      @media (min-width: 769px) and (max-width: 1024px) {
+        .VPHomeFeatures .items {
+          grid-template-columns: repeat(2, 1fr);
+        }
       }
       img {
         max-width: 100%;
