@@ -7,7 +7,7 @@ export default withMermaid({
   title: "宝捷信立式注塑机",
   description: "宝捷信立式注塑机技术文档与功能整理",
   titleTemplate: ':title - 宝捷信立式注塑机',
-  base: '/inj-machine-docs/',
+  base: process.env.NETLIFY ? '/' : '/inj-machine-docs/',
   ignoreDeadLinks: true,
   head: [
     ['link', { rel: 'icon', href: '/favicon.svg' }],
