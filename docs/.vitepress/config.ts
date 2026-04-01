@@ -136,39 +136,18 @@ export default withMermaid({
       }
     `],
     // 预加载关键资源
-    ['link', { rel: 'preload', href: '/assets/app.js', as: 'script', defer: true }],
+    ['link', { rel: 'preload', href: '/assets/app.js', as: 'script' }],
     ['link', { rel: 'preload', href: '/assets/style.css', as: 'style', onload: 'this.onload=null;this.rel="stylesheet"' }]
   ],
-  appearance: 'toggle',
   sitemap: {
     hostname: 'http://localhost:5174'
   },
   cleanUrls: true,
-  // 配置构建选项
-  build: {
-    minify: true,
-    cssCodeSplit: true,
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          vendor: ['vue'],
-          mermaid: ['mermaid'],
-          search: ['vitepress/dist/client/theme-default/composables/search']
-        }
-      }
-    }
-  },
 
   markdown: {
     lineNumbers: true,
   },
-  lastUpdated: {
-    text: '最后更新于',
-    formatOptions: {
-      dateStyle: 'full',
-      timeStyle: 'medium'
-    }
-  },
+  lastUpdated: true,
 
   themeConfig: {
     logo: '/logo.png',

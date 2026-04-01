@@ -47,13 +47,13 @@ export default defineConfig({
           // 分割图片和媒体资源
           media: ['**/*.png', '**/*.jpg', '**/*.svg']
         },
-        // 启用长期缓存
-        hashFunction: 'sha256',
-        // 优化chunk大小
-        maxAssetSize: 400000, // 400KB
         // 输出更详细的构建信息
         generatedCode: 'es2015'
       }
+    },
+    // 启用长期缓存
+    cssHash: {
+      strategy: 'content'
     },
     // 启用sourcemap（可选，用于调试）
     sourcemap: false,

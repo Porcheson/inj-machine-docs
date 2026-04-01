@@ -96,6 +96,23 @@
   border-radius: 4px;
   background-color: var(--vp-c-brand-soft);
   color: var(--vp-c-brand-1);
+  vertical-align: middle;
+}
+
+/* info-card 和 feature-block 中的图标样式 */
+.info-card .icon,
+.feature-block .icon {
+  display: flex;
+  margin: 0 0 8px 0;
+  width: 32px;
+  height: 32px;
+  font-size: 18px;
+}
+
+.info-card strong,
+.feature-block h4 {
+  display: block;
+  margin-bottom: 8px;
 }
 
 .icon-sm {
