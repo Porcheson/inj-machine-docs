@@ -76,7 +76,7 @@ VAR_OUTPUT
 	bDone: BOOL;		// 完成状态
 	bAlarm: BOOL;		// 报警状态
     (* 报警信息 *)
-	uiAlarmID: DWORD;		// 报警代码（按位标识，可同时报告多个报警）
+	dwAlarmID: DWORD;		// 报警代码（按位标识，可同时报告多个报警）
 							(*	Bit0(1):   储料超时
 								Bit1(2):   位置超限
 								...其他位预留

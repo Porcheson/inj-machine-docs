@@ -98,7 +98,7 @@ VAR_OUTPUT
 	bAlarm: BOOL;		// 报警状态
 	
     (* 报警信息 *)
-	uiAlarmID: DWORD;		// 报警代码（按位标识，可同时报告多个报警）
+	dwAlarmID: DWORD;		// 报警代码（按位标识，可同时报告多个报警）
 							(*	Bit0(1):   中子进超时
 								Bit1(2):   中子退超时
 								Bit2(4):   位置超限
