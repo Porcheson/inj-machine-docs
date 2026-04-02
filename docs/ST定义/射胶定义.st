@@ -65,14 +65,18 @@ STRUCT
 		
 		
 	(* 射退工艺参数 12*)
-	uiSuckBackMode: UINT;						// 射退方式选择 0:电子尺  1:时间(时间为0,走行程开关)  
+	uiSuckBackMode: UINT;						// 射退方式选择 0:电子尺  1:时间(时间为0,走行程开关)
 	stSuckBackSeg: ST_InjectSeg;				// 射退设定参数
-	
+
 	uiSuckBackPresStartGrad: UINT;				// 压力启动斜率
 	uiSuckBackPresStopGrad: UINT;				// 压力停止斜率
 	uiSuckBackSpdStartGrad: UINT;				// 速度启动斜率
-	uiSuckBackSpdStopGrad: UINT;				// 速度停止斜率		
-	
+	uiSuckBackSpdStopGrad: UINT;				// 速度停止斜率
+
+	(* 射出调试模式参数（调模状态下使用） *)
+	stInjDbgSeg: ST_InjectSeg;					// 射出调试段参数
+	stSuckBackDbgSeg: ST_InjectSeg;				// 射退调试段参数
+
 END_STRUCT
 END_TYPE
 
@@ -90,7 +94,7 @@ VAR_INPUT
 	bReset: BOOL;				// 复位	
 	
     (* 模式选择 *)	
-	uiInjectMode: UINT;		// 0:无模式 1:射出模式 2:射退模式
+	uiInjectMode: UINT;		// 0:无模式 1:射出模式 2:射退模式 3:射出(调试模式) 4:射退(调试模式)
 	
 	(* 上位机设定参数输入 *)	
 	stInjectPara: ST_InjectPara;

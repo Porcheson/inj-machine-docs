@@ -31,32 +31,36 @@ END_TYPE
 
 
 TYPE ST_NozzlePara :
-STRUCT	
-			
+STRUCT
+
+
 	(* 座台进工艺参数 21*)
-	uiNozzleInSegCnt: UINT;							// 座台进段数选择  
+	uiNozzleInSegCnt: UINT;							// 座台进段数选择
 	uiNozzleInMode: UINT;							// 座台进方式选择 0:时间  1:行程  2:位置
 	uiNozzleInLimitTime: UINT;						// 座台进限制时间
 	aNozzleInSeg: ARRAY[1..2] OF ST_NozzleSeg;		// 座台进多段设定参数
-	
+
 	uiNozzleInPresStartGrad: UINT;				// 压力启动斜率
 	uiNozzleInPresStopGrad: UINT;				// 压力停止斜率
 	uiNozzleInSpdStartGrad: UINT;				// 速度启动斜率
 	uiNozzleInSpdStopGrad: UINT;				// 速度停止斜率
-	
-	
+
+
 	(* 座台退工艺参数 21*)
-	uiNozzleOutSegCnt: UINT;							// 座台退段数选择  
+	uiNozzleOutSegCnt: UINT;							// 座台退段数选择
 	uiNozzleOutMode: UINT;							// 座台退方式选择 0:时间  1:行程  2:位置
 	uiNozzleOutLimitTime: UINT;						// 座台退限制时间
 	aNozzleOutSeg: ARRAY[1..2] OF ST_NozzleSeg;		// 座台退多段设定参数
-	
+
 	uiNozzleOutPresStartGrad: UINT;				// 压力启动斜率
 	uiNozzleOutPresStopGrad: UINT;				// 压力停止斜率
 	uiNozzleOutSpdStartGrad: UINT;				// 速度启动斜率
 	uiNozzleOutSpdStopGrad: UINT;				// 速度停止斜率
-	
-	
+
+	(* 座台调试模式参数（调模状态下使用） *)
+	stNozzleInDbgSeg: ST_NozzleSeg;				// 座台进调试段参数
+	stNozzleOutDbgSeg: ST_NozzleSeg;			// 座台退调试段参数
+
 END_STRUCT
 END_TYPE
 
@@ -75,7 +79,7 @@ VAR_INPUT
 	bReset: BOOL;				// 复位	
 	
     (* 模式选择 *)	
-	uiNozzleMode: UINT;		// 0:无模式 1:座台进模式 2:座台退模式
+	uiNozzleMode: UINT;		// 0:无模式 1:座台进模式 2:座台退模式 3:座台进(调试模式) 4:座台退(调试模式)
 	
 	(* 上位机设定参数输入 *)	
 	stNozzlePara: ST_NozzlePara;

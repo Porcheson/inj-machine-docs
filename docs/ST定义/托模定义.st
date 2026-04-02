@@ -32,34 +32,38 @@ END_TYPE
 
 TYPE ST_EjectPara :
 STRUCT
-	
+
 	(* 托模进工艺参数 28*)
-	uiEjectInSegCnt: UINT;							// 托模进段数选择   
-	uiEjectInMode: UINT;							// 托模进方式选择 0:时间  1:行程  2:位置  
+	uiEjectInSegCnt: UINT;							// 托模进段数选择
+	uiEjectInMode: UINT;							// 托模进方式选择 0:时间  1:行程  2:位置
 	uiEjectInLimitTime: UINT;						// 托模进限制时间
 	aEjectInSeg: ARRAY[1..3] OF ST_EjectSeg;		// 托模进多段设定参数
-	
+
 	uiEjectInPresStartGrad: UINT;				// 压力启动斜率
 	uiEjectInPresStopGrad: UINT;				// 压力停止斜率
 	uiEjectInSpdStartGrad: UINT;				// 速度启动斜率
 	uiEjectInSpdStopGrad: UINT;					// 速度停止斜率
-		
-		
+
+
 	(* 托模保持工艺参数 7*)
 	stEjectKeepSeg: ST_EjectSeg;		// 托模保持设定参数
-		
-	
+
+
 	(* 托模退工艺参数 28*)
-	uiEjectOutSegCnt: UINT;							// 托模退段数选择   
-	uiEjectOutMode: UINT;							// 托模退方式选择 0:时间  1:行程  2:位置  
+	uiEjectOutSegCnt: UINT;							// 托模退段数选择
+	uiEjectOutMode: UINT;							// 托模退方式选择 0:时间  1:行程  2:位置
 	uiEjectOutLimitTime: UINT;						// 托模退限制时间
 	aEjectOutSeg: ARRAY[1..3] OF ST_EjectSeg;		// 托模退多段设定参数
-	
+
 	uiEjectOutPresStartGrad: UINT;				// 压力启动斜率
 	uiEjectOutPresStopGrad: UINT;				// 压力停止斜率
 	uiEjectOutSpdStartGrad: UINT;				// 速度启动斜率
-	uiEjectOutSpdStopGrad: UINT;				// 速度停止斜率	
-	
+	uiEjectOutSpdStopGrad: UINT;					// 速度停止斜率
+
+	(* 托模调试模式参数（调模状态下使用） *)
+	stEjectInDbgSeg: ST_EjectSeg;				// 托模进调试段参数
+	stEjectOutDbgSeg: ST_EjectSeg;				// 托模退调试段参数
+
 END_STRUCT
 END_TYPE
 
@@ -77,7 +81,7 @@ VAR_INPUT
 	bReset: BOOL;				// 复位	
 	
     (* 模式选择 *)	
-	uiEjectMode: UINT;		// 0:无模式 1:托模进模式 2:托模退模式 3:定次 4:震动 5:停留
+	uiEjectMode: UINT;		// 0:无模式 1:托模进模式 2:托模退模式 3:定次 4:震动 5:停留 6:托模进(调试模式) 7:托模退(调试模式)
 	
 	(* 上位机设定参数输入 *)	
 	stEjectPara: ST_EjectPara;

@@ -30,36 +30,38 @@ END_TYPE
 
 TYPE ST_CorePara :
 STRUCT
-		
+
 	(* 中子进工艺参数 14*)
 	uiCoreInStartMode: UINT;		// 中子进开始方式 0:行程 1:位置
 	uiCoreInStroke: UINT;			// 中子进开始行程
-	udiCoreInPos: UDINT;			// 中子进开始位置	
+	udiCoreInPos: UDINT;			// 中子进开始位置
 	uiCoreInStopMode: UINT;			// 中子进停止方式 0:时间 1:行程 2:计数
 	uiCoreInLimitTime: UINT;		// 中子进限制时间
 	stCoreInSeg: ST_CoreSeg;		// 中子进设定参数
-	
+
 	uiCoreInPresStartGrad: UINT;			// 压力启动斜率
 	uiCoreInPresStopGrad: UINT;				// 压力停止斜率
 	uiCoreInSpdStartGrad: UINT;				// 速度启动斜率
 	uiCoreInSpdStopGrad: UINT;				// 速度停止斜率
-	
-	
+
+
 	(* 中子退工艺参数 14*)
 	uiCoreOutStartMode: UINT;		// 中子退开始方式 0:行程 1:位置
 	uiCoreOutStroke: UINT;			// 中子退开始行程
-	udiCoreOutPos: UDINT;			// 中子退开始位置	
+	udiCoreOutPos: UDINT;			// 中子退开始位置
 	uiCoreOutStopMode: UINT;		// 中子退停止方式 0:时间 1:行程 2:计数
 	uiCoreOutLimitTime: UINT;		// 中子退限制时间
 	stCoreOutSeg: ST_CoreSeg;		// 中子退设定参数
-	
+
 	uiCoreOutPresStartGrad: UINT;			// 压力启动斜率
 	uiCoreOutPresStopGrad: UINT;			// 压力停止斜率
 	uiCoreOutSpdStartGrad: UINT;			// 速度启动斜率
 	uiCoreOutSpdStopGrad: UINT;				// 速度停止斜率
-	
-	
-	
+
+	(* 中子调试模式参数（调模状态下使用） *)
+	stCoreInDbgSeg: ST_CoreSeg;				// 中子进调试段参数
+	stCoreOutDbgSeg: ST_CoreSeg;			// 中子退调试段参数
+
 END_STRUCT
 END_TYPE
 
@@ -76,7 +78,7 @@ VAR_INPUT
 	bReset: BOOL;				// 复位	
 	
     (* 模式选择 *)	
-	uiCoreMode: UINT;		// 0:无模式 1:中子进模式 2:中子退模式
+	uiCoreMode: UINT;		// 0:无模式 1:中子进模式 2:中子退模式 3:中子进(调试模式) 4:中子退(调试模式)
 	
 	(* 上位机设定参数输入 *)	
 	stCorePara: ST_CorePara;
