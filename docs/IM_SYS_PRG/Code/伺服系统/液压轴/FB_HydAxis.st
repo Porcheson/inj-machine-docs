@@ -15,6 +15,28 @@ VAR_IN_OUT
     stAxisRef: ST_AxisRefHyd;      // 共享轴引用；模块层写目标值，轴层做最终整理
 END_VAR
 VAR_INPUT
+    
+    (* 控制命令 *)		
+	bStart: BOOL;		// 启动	
+	bStop: BOOL;		// 停止(有减速停)		
+	bEStop: BOOL;		// 急停(立即停止，无减速停)	
+	bReset: BOOL;		// 复位	
+	bDir: BOOL;			// 方向
+
+    (* 模式选择 *)	
+	uiMode: UINT;		// 0:无模式 1:位置模式 2:速度模式 3:扭矩模式
+
+    (* 参数设定 *)	
+	uiCmdPres  : UINT; 	// 压力目标
+    uiSpd      : UINT; 	// 速度目标
+    udiPos     : UDINT; // 位置目标
+    uiForce    : UINT; 	// 力目标，可选(锁模,射胶时使用）
+	
+    uiAcc	: UINT;     // 加速度 
+    uiDec	: UINT;     // 减速度 
+	uiJerk	: UINT;     // 加加速
+
+
     bEnable: BOOL;                 // TRUE=当前主控允许该轴工作
     bReset: BOOL;                  // TRUE=清空轴层状态与命令
     nAxisID: INT;                  // 统一轴号，供主控/HMI/下位 I/O 对齐
@@ -26,6 +48,18 @@ VAR_INPUT
     rPresTolerance: LREAL;         // 压力到位容差
 END_VAR
 VAR_OUTPUT
+    	
+	(* 状态输出 *)	
+	bBusy: BOOL;		// 忙状态		
+	bDone: BOOL;		// 完成状态
+	bAlarm: BOOL;		// 报警状态
+	
+    (* 报警信息 *)		
+	dwAlarmID: DWORD;		// 报警代码							
+							(*	0:无 							
+							*)	
+	
+    
     stStatus: ST_HydAxisStatus;    // 轴层最终状态与限幅后的命令输出
 END_VAR
 VAR
