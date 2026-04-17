@@ -27,7 +27,6 @@ VAR_INPUT
     (* 自动前置条件。 *)
     bDoorClosed: BOOL;
     bHydReady: BOOL;
-    bTempReady: BOOL;
     bSystemNoAlarm: BOOL;
 
     (* 合模模块反馈。 *)
@@ -118,7 +117,7 @@ bEjectStart := FALSE;
 bEjectReset := FALSE;
 uiEjectMode := 0;
 
-bReadyOk := bDoorClosed AND bHydReady AND bTempReady AND bSystemNoAlarm;
+bReadyOk := bDoorClosed AND bHydReady AND bSystemNoAlarm;   // 自动前置条件现只检查安全门、液压和系统无报警，不再依赖独立温度就绪回灌。
 bStateEntry := (eState <> ePrevState);
 ePrevState := eState;
 

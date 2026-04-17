@@ -6,7 +6,7 @@
 
   说明：
   1. 手动模式下本块工作在点动方式；自动模式下按参数段推进。
-  2. 本块只负责工艺层命令，不承担最终轴保护。
+  2. 状态机部分只负责工艺层命令，块尾由内部 `FB_HydAxis` 承担最终轴保护。
 *)
 FUNCTION_BLOCK FB_Meter
 VAR_IN_OUT
@@ -21,6 +21,9 @@ VAR_INPUT
     stMeterPara: ST_MeterPara;        // 储料工艺参数
     bMeterStop: BOOL;                 // 储料停止信号
     udiInjElecRulerVal: UDINT;        // 位置反馈
+    rMeterActualPosition: LREAL;      // 储料轴实际位置反馈
+    rMeterActualVelocity: LREAL;      // 储料轴实际速度反馈
+    rMeterActualPressure: LREAL;      // 储料轴实际压力反馈
 END_VAR
 VAR_OUTPUT
     bBusy: BOOL;                      // TRUE=当前动作尚未结束
@@ -37,6 +40,18 @@ VAR_OUTPUT
 END_VAR
 VAR
     eState: E_MeterState := eState_Idle; // 当前储料状态机状态
+    fbAxisInst: FB_HydAxis;              // 储料轴层实例
+    stAxisStatusLocal: ST_HydAxisStatus; // 储料轴层状态缓存
+    stAxisConfigLocal: ST_HydAxisConfig := (
+        nAxisID := 5,
+        rMaxCylinderStroke := 10000.0,
+        rMaxVelocity := 1000.0,
+        rMaxPressure := 1000.0,
+        rPosTolerance := 0.5,
+        rVelTolerance := 0.5,
+        rPresTolerance := 0.5
+    );
+    bAxisEnableLocal: BOOL := FALSE;     // 储料轴层使能，由模块内部根据停机/急停收口
     uiStageIndex: UINT := 0;             // 当前执行到的储料段号
     tPulse: TON;                         // 100ms 节拍定时器，用于累计储料时间
     udiElapsedMs: UDINT := 0;            // 当前储料动作已运行时间，单位 ms
@@ -181,6 +196,9 @@ END_IF;
 
 (* 当前轴接口没有独立背压设定字段，因此这里只把压力/速度/位置回写到共享轴结构；
    `uiBackPresCmd` 仍保留在功能块输出，供主控或后续扩展读取。 *)
+stMeterAxis.rActualPosition := rMeterActualPosition;
+stMeterAxis.rActualVelocity := rMeterActualVelocity;
+stMeterAxis.rActualPressure := rMeterActualPressure;
 stMeterAxis.rSetPressure := TO_LREAL(uiPresCmd);
 stMeterAxis.rSetVelocity := TO_LREAL(uiSpdCmd);
 stMeterAxis.rSetPosition := TO_LREAL(udiPosCmd);
@@ -193,4 +211,20 @@ ELSE
     stMeterAxis.eAxisState := Idle;
 END_IF;
 stMeterAxis.nFaultCode := TO_INT(dwAlarmID);
+bAxisEnableLocal := (NOT bStop) AND (NOT bEStop);
+
+fbAxisInst(
+    stAxisRef := stMeterAxis,
+    bEnable := bAxisEnableLocal,
+    bReset := bReset,
+    stConfig := stAxisConfigLocal,
+    stStatus => stAxisStatusLocal
+);
+
+bBusy := bBusy OR stAxisStatusLocal.bCommandActive;
+bAlarm := bAlarm OR stAxisStatusLocal.bAlarm;
+dwAlarmID := dwAlarmID OR stAxisStatusLocal.dwAlarmID;
+IF stAxisStatusLocal.uiActTime > uiActTime THEN
+    uiActTime := stAxisStatusLocal.uiActTime;
+END_IF;
 END_FUNCTION_BLOCK

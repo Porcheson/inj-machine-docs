@@ -6,7 +6,7 @@
   3. 对外仍保持与普通托模模块相似的 Busy/Done/Alarm 接口，便于主控统一调用。
 
   说明：
-  1. 本块本身不直接生成液压命令，而是复用 `FB_Eject` 完成具体动作。
+  1. 本块本身不直接生成工艺命令，而是直接复用 `FB_Eject` 完成具体动作。
   2. `uiSeqPhase` 用来表示当前执行到“复位子块、托进、再次复位、托退”的哪一步。
   3. 只有在手动组合模式被上层明确选择时，才应该让本块接管托模轴输出。
 *)
@@ -25,6 +25,9 @@ VAR_INPUT
     bEjectInStop: BOOL;           // 托模进停止信号，直接透传给内部 `FB_Eject`
     bEjectOutStop: BOOL;          // 托模退停止信号，直接透传给内部 `FB_Eject`
     udiEjectElecRulerVal: UDINT;  // 托模电子尺反馈，直接透传给内部 `FB_Eject`
+    rEjectActualPosition: LREAL;  // 托模轴实际位置反馈
+    rEjectActualVelocity: LREAL;  // 托模轴实际速度反馈
+    rEjectActualPressure: LREAL;  // 托模轴实际压力反馈
 END_VAR
 VAR_OUTPUT
     bBusy: BOOL;                  // TRUE=组合托模模式尚未完成
@@ -278,8 +281,8 @@ END_IF;
 fbEject(
     stEjectAxis := stEjectAxis,
     bStart := bCmdStart,
-    bStop := FALSE,
-    bEStop := FALSE,
+    bStop := bStop,
+    bEStop := bEStop,
     bReset := bCmdReset,
     bManualMode := FALSE,
     uiEjectMode := uiCmdMode,
@@ -287,6 +290,9 @@ fbEject(
     bEjectInStop := bEjectInStop,
     bEjectOutStop := bEjectOutStop,
     udiEjectElecRulerVal := udiEjectElecRulerVal,
+    rEjectActualPosition := rEjectActualPosition,
+    rEjectActualVelocity := rEjectActualVelocity,
+    rEjectActualPressure := rEjectActualPressure,
     bBusy => bSubBusy,
     bDone => bSubDone,
     bAlarm => bSubAlarm,

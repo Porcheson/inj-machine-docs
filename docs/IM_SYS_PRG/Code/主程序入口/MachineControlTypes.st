@@ -45,13 +45,12 @@ STRUCT
     bCoreStart: BOOL;
     uiCoreMode: UINT;
 
-    (* 温控手动命令。bTempManualMode 为 TRUE 时，bR0~bR3 直接驱动 4 组加热。 *)
-    bTempStart: BOOL;
-    bTempManualMode: BOOL;
-    bR0: BOOL;
-    bR1: BOOL;
-    bR2: BOOL;
-    bR3: BOOL;
+    (* 温控顶层命令。bTempStart 启动温控；bR0~bR3 可直接下发 4 组加热命令。 *)
+    bTempStart: BOOL;          // TRUE=顶层温控块进入执行态。
+    bR0: BOOL;                 // TRUE=人工直接驱动第 0 组加热输出。
+    bR1: BOOL;                 // TRUE=人工直接驱动第 1 组加热输出。
+    bR2: BOOL;                 // TRUE=人工直接驱动第 2 组加热输出。
+    bR3: BOOL;                 // TRUE=人工直接驱动第 3 组加热输出。
 END_STRUCT
 END_TYPE
 
@@ -91,7 +90,6 @@ STRUCT
     (* 机器公共条件。自动流程会优先检查这些前提是否满足。 *)
     bDoorClosed: BOOL;
     bHydReady: BOOL;
-    bTempReady: BOOL;           // 允许外部温控系统直接回灌“温度已就绪”
     bSystemNoAlarm: BOOL;
 
     (* 合模模块过程信号。 *)
@@ -129,7 +127,7 @@ STRUCT
     bCoreOutStop: BOOL;
 
     (* 轴反馈。
-       这些反馈值会被主控层回写到 `ST_AxisRefHyd`，让模块层能同时看到“设定值”和“实际值”。
+       这些反馈值会经由子模块接口写回各自的 `ST_AxisRefHyd`，让模块层同时看到“设定值”和“实际值”。
     *)
     rClampActualPosition: LREAL;
     rClampActualVelocity: LREAL;
@@ -325,12 +323,5 @@ STRUCT
     bCoreIned: BOOL;
     bCoreOuted: BOOL;
 
-    (* 温控模块状态。 *)
-    bTempBusy: BOOL;
-    bTempDone: BOOL;
-    bTempAlarm: BOOL;
-    dwTempAlarmID: DWORD;
-    bTempReady: BOOL;
-    uiTempHeatState: UINT;
 END_STRUCT
 END_TYPE

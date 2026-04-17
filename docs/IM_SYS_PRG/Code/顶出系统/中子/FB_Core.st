@@ -22,6 +22,9 @@ VAR_INPUT
     stCorePara: ST_CorePara;          // 中子工艺参数
     bCoreInStop: BOOL;                // 中子进停止信号
     bCoreOutStop: BOOL;               // 中子退停止信号
+    rCoreActualPosition: LREAL;       // 中子轴实际位置反馈
+    rCoreActualVelocity: LREAL;       // 中子轴实际速度反馈
+    rCoreActualPressure: LREAL;       // 中子轴实际压力反馈
 END_VAR
 VAR_OUTPUT
     bBusy: BOOL;                      // TRUE=当前动作尚未结束
@@ -38,6 +41,18 @@ VAR_OUTPUT
 END_VAR
 VAR
     eState: E_CoreState := eState_Idle; // 当前中子状态机状态
+    fbAxisInst: FB_HydAxis;              // 中子轴层实例
+    stAxisStatusLocal: ST_HydAxisStatus; // 中子轴层状态缓存
+    stAxisConfigLocal: ST_HydAxisConfig := (
+        nAxisID := 7,
+        rMaxCylinderStroke := 10000.0,
+        rMaxVelocity := 1000.0,
+        rMaxPressure := 1000.0,
+        rPosTolerance := 0.5,
+        rVelTolerance := 0.5,
+        rPresTolerance := 0.5
+    );
+    bAxisEnableLocal: BOOL := FALSE;     // 中子轴层使能，由模块内部根据停机/急停收口
     tPulse: TON;                        // 100ms 节拍定时器，用于累计动作时间
     udiElapsedMs: UDINT := 0;           // 当前中子动作已运行时间，单位 ms
     uiStopCount: UINT := 0;             // 停止信号上升沿累计次数，用于计数式结束模式
@@ -294,6 +309,9 @@ bPrevInStop := bCoreInStop;
 bPrevOutStop := bCoreOutStop;
 
 (* 将工艺命令回写到共享轴结构，由轴层功能块继续做最终执行。 *)
+stCoreAxis.rActualPosition := rCoreActualPosition;
+stCoreAxis.rActualVelocity := rCoreActualVelocity;
+stCoreAxis.rActualPressure := rCoreActualPressure;
 stCoreAxis.rSetPressure := TO_LREAL(uiPresCmd);
 stCoreAxis.rSetVelocity := TO_LREAL(uiSpdCmd);
 stCoreAxis.rSetPosition := TO_LREAL(udiPosCmd);
@@ -306,4 +324,20 @@ ELSE
     stCoreAxis.eAxisState := Idle;
 END_IF;
 stCoreAxis.nFaultCode := TO_INT(dwAlarmID);
+bAxisEnableLocal := (NOT bStop) AND (NOT bEStop);
+
+fbAxisInst(
+    stAxisRef := stCoreAxis,
+    bEnable := bAxisEnableLocal,
+    bReset := bReset,
+    stConfig := stAxisConfigLocal,
+    stStatus => stAxisStatusLocal
+);
+
+bBusy := bBusy OR stAxisStatusLocal.bCommandActive;
+bAlarm := bAlarm OR stAxisStatusLocal.bAlarm;
+dwAlarmID := dwAlarmID OR stAxisStatusLocal.dwAlarmID;
+IF stAxisStatusLocal.uiActTime > uiActTime THEN
+    uiActTime := stAxisStatusLocal.uiActTime;
+END_IF;
 END_FUNCTION_BLOCK

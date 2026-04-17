@@ -23,6 +23,9 @@ VAR_INPUT
     bEjectInStop: BOOL;               // 托模进停止信号
     bEjectOutStop: BOOL;              // 托模退停止信号
     udiEjectElecRulerVal: UDINT;      // 位置反馈
+    rEjectActualPosition: LREAL;      // 托模轴实际位置反馈
+    rEjectActualVelocity: LREAL;      // 托模轴实际速度反馈
+    rEjectActualPressure: LREAL;      // 托模轴实际压力反馈
 END_VAR
 VAR_OUTPUT
     bBusy: BOOL;                      // TRUE=当前动作尚未结束
@@ -39,6 +42,18 @@ VAR_OUTPUT
 END_VAR
 VAR
     eState: E_EjectState := eState_Idle; // 当前托模状态机状态
+    fbAxisInst: FB_HydAxis;              // 托模轴层实例
+    stAxisStatusLocal: ST_HydAxisStatus; // 托模轴层状态缓存
+    stAxisConfigLocal: ST_HydAxisConfig := (
+        nAxisID := 6,
+        rMaxCylinderStroke := 10000.0,
+        rMaxVelocity := 1000.0,
+        rMaxPressure := 1000.0,
+        rPosTolerance := 0.5,
+        rVelTolerance := 0.5,
+        rPresTolerance := 0.5
+    );
+    bAxisEnableLocal: BOOL := FALSE;     // 托模轴层使能，由模块内部根据停机/急停收口
     uiStageIndex: UINT := 0;             // 当前执行到的托模进/托模退段号
     tPulse: TON;                         // 100ms 节拍定时器，用于累计动作时间
     udiElapsedMs: UDINT := 0;            // 当前托模动作或保持段已运行时间，单位 ms
@@ -304,6 +319,9 @@ ELSE
 END_IF;
 
 (* 将当前托模命令回写到共享轴结构，由轴层功能块完成最终执行。 *)
+stEjectAxis.rActualPosition := rEjectActualPosition;
+stEjectAxis.rActualVelocity := rEjectActualVelocity;
+stEjectAxis.rActualPressure := rEjectActualPressure;
 stEjectAxis.rSetPressure := TO_LREAL(uiPresCmd);
 stEjectAxis.rSetVelocity := TO_LREAL(uiSpdCmd);
 stEjectAxis.rSetPosition := TO_LREAL(udiPosCmd);
@@ -316,4 +334,20 @@ ELSE
     stEjectAxis.eAxisState := Idle;
 END_IF;
 stEjectAxis.nFaultCode := TO_INT(dwAlarmID);
+bAxisEnableLocal := (NOT bStop) AND (NOT bEStop);
+
+fbAxisInst(
+    stAxisRef := stEjectAxis,
+    bEnable := bAxisEnableLocal,
+    bReset := bReset,
+    stConfig := stAxisConfigLocal,
+    stStatus => stAxisStatusLocal
+);
+
+bBusy := bBusy OR stAxisStatusLocal.bCommandActive;
+bAlarm := bAlarm OR stAxisStatusLocal.bAlarm;
+dwAlarmID := dwAlarmID OR stAxisStatusLocal.dwAlarmID;
+IF stAxisStatusLocal.uiActTime > uiActTime THEN
+    uiActTime := stAxisStatusLocal.uiActTime;
+END_IF;
 END_FUNCTION_BLOCK

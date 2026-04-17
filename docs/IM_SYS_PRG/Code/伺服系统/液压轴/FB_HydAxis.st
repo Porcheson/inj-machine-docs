@@ -15,37 +15,9 @@ VAR_IN_OUT
     stAxisRef: ST_AxisRefHyd;      // 共享轴引用；模块层写目标值，轴层做最终整理
 END_VAR
 VAR_INPUT
-    
-    (* 控制命令 *)		
-	bStart: BOOL;		// 启动	
-	bStop: BOOL;		// 停止(有减速停)		
-	bEStop: BOOL;		// 急停(立即停止，无减速停)	
-	bReset: BOOL;		// 复位	
-	bDir: BOOL;			// 方向
-
-    (* 模式选择 *)	
-	uiMode: UINT;		// 0:无模式 1:位置模式 2:速度模式 3:扭矩模式
-
-    (* 参数设定 *)	
-	uiCmdPres  : UINT; 	// 压力目标
-    uiSpd      : UINT; 	// 速度目标
-    udiPos     : UDINT; // 位置目标
-    uiForce    : UINT; 	// 力目标，可选(锁模,射胶时使用）
-	
-    uiAcc	: UINT;     // 加速度 
-    uiDec	: UINT;     // 减速度 
-	uiJerk	: UINT;     // 加加速
-
-
     bEnable: BOOL;                 // TRUE=当前主控允许该轴工作
     bReset: BOOL;                  // TRUE=清空轴层状态与命令
-    nAxisID: INT;                  // 统一轴号，供主控/HMI/下位 I/O 对齐
-    rMaxCylinderStroke: LREAL;     // 轴允许的最大行程上限
-    rMaxVelocity: LREAL;           // 轴允许的最大速度上限
-    rMaxPressure: LREAL;           // 轴允许的最大压力上限
-    rPosTolerance: LREAL;          // 位置到位容差
-    rVelTolerance: LREAL;          // 速度到位容差
-    rPresTolerance: LREAL;         // 压力到位容差
+    stConfig: ST_HydAxisConfig;    // 轴配置：轴号、行程、速度和压力保护边界
 END_VAR
 VAR_OUTPUT
     	
@@ -75,10 +47,10 @@ END_VAR
    这样模块层、主控层和未来的 I/O 层都能读取到一致的轴定义。
 *)
 stAxisRef.bActive := bEnable;
-stAxisRef.nAxisID := nAxisID;
-stAxisRef.rMaxCylinderStroke := rMaxCylinderStroke;
-stAxisRef.rMaxVelocity := rMaxVelocity;
-stAxisRef.rMaxPressure := rMaxPressure;
+stAxisRef.nAxisID := stConfig.nAxisID;
+stAxisRef.rMaxCylinderStroke := stConfig.rMaxCylinderStroke;
+stAxisRef.rMaxVelocity := stConfig.rMaxVelocity;
+stAxisRef.rMaxPressure := stConfig.rMaxPressure;
 
 IF bReset THEN
     (* 复位时清空轴层命令、报警和计时，但保留由主控回写的实际反馈。 *)
@@ -118,24 +90,24 @@ ELSE
     IF rSafePosition < 0.0 THEN
         rSafePosition := 0.0;
         dwAxisFault := dwAxisFault OR DWORD#16#0002;
-    ELSIF (rMaxCylinderStroke > 0.0) AND (rSafePosition > rMaxCylinderStroke) THEN
-        rSafePosition := rMaxCylinderStroke;
+    ELSIF (stConfig.rMaxCylinderStroke > 0.0) AND (rSafePosition > stConfig.rMaxCylinderStroke) THEN
+        rSafePosition := stConfig.rMaxCylinderStroke;
         dwAxisFault := dwAxisFault OR DWORD#16#0002;
     END_IF;
 
     IF rSafeVelocity < 0.0 THEN
         rSafeVelocity := 0.0;
         dwAxisFault := dwAxisFault OR DWORD#16#0004;
-    ELSIF (rMaxVelocity > 0.0) AND (rSafeVelocity > rMaxVelocity) THEN
-        rSafeVelocity := rMaxVelocity;
+    ELSIF (stConfig.rMaxVelocity > 0.0) AND (rSafeVelocity > stConfig.rMaxVelocity) THEN
+        rSafeVelocity := stConfig.rMaxVelocity;
         dwAxisFault := dwAxisFault OR DWORD#16#0004;
     END_IF;
 
     IF rSafePressure < 0.0 THEN
         rSafePressure := 0.0;
         dwAxisFault := dwAxisFault OR DWORD#16#0008;
-    ELSIF (rMaxPressure > 0.0) AND (rSafePressure > rMaxPressure) THEN
-        rSafePressure := rMaxPressure;
+    ELSIF (stConfig.rMaxPressure > 0.0) AND (rSafePressure > stConfig.rMaxPressure) THEN
+        rSafePressure := stConfig.rMaxPressure;
         dwAxisFault := dwAxisFault OR DWORD#16#0008;
     END_IF;
 
@@ -191,11 +163,16 @@ ELSE
     stStatus.rCmdVelocity := stAxisRef.rSetVelocity;
     stStatus.rCmdPressure := stAxisRef.rSetPressure;
 
-    stStatus.bInPosition := ABS(stAxisRef.rActualPosition - stStatus.rCmdPosition) <= rPosTolerance;
-    stStatus.bInVelocity := ABS(stAxisRef.rActualVelocity - stStatus.rCmdVelocity) <= rVelTolerance;
-    stStatus.bInPressure := ABS(stAxisRef.rActualPressure - stStatus.rCmdPressure) <= rPresTolerance;
+    stStatus.bInPosition := ABS(stAxisRef.rActualPosition - stStatus.rCmdPosition) <= stConfig.rPosTolerance;
+    stStatus.bInVelocity := ABS(stAxisRef.rActualVelocity - stStatus.rCmdVelocity) <= stConfig.rVelTolerance;
+    stStatus.bInPressure := ABS(stAxisRef.rActualPressure - stStatus.rCmdPressure) <= stConfig.rPresTolerance;
 
     (* 统一把轴层最终报警码回写到共享轴故障码，便于上层直接读取。 *)
     stAxisRef.nFaultCode := TO_INT(stStatus.dwAlarmID);
 END_IF;
+
+bBusy := stStatus.bCommandActive;
+bDone := stStatus.bEnabled AND (NOT stStatus.bCommandActive) AND stStatus.bReady;
+bAlarm := stStatus.bAlarm;
+dwAlarmID := stStatus.dwAlarmID;
 END_FUNCTION_BLOCK

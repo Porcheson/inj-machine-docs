@@ -9,7 +9,7 @@
   2. 现场若接入真实温控器，应优先复用本文件结构，避免再次拆散接口。
 *)
 
-TYPE ST_EK312State :
+TYPE E_EK312State :
 (
     eState_Idle,     // 空闲：等待启动
     eState_Init,     // 初始化：装载初值并进入升温阶段

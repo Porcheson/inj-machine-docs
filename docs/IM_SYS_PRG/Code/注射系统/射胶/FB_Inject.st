@@ -6,7 +6,7 @@
 
   说明：
   1. 正常模式使用 1=射出、2=射退；调试模式使用 3/4。
-  2. 本块只生成工艺命令和状态，不承担最终轴限幅与保护。
+  2. 状态机部分只生成工艺命令和状态，块尾由内部 `FB_HydAxis` 完成最终轴限幅与保护。
 *)
 FUNCTION_BLOCK FB_Inject
 VAR_IN_OUT
@@ -25,6 +25,9 @@ VAR_INPUT
     bInjStop: BOOL;                   // 射出结束信号
     bSuckBackStop: BOOL;              // 射退结束信号
     udiInjElecRulerVal: UDINT;        // 位置反馈
+    rInjectActualPosition: LREAL;     // 射胶轴实际位置反馈
+    rInjectActualVelocity: LREAL;     // 射胶轴实际速度反馈
+    rInjectActualPressure: LREAL;     // 射胶轴实际压力反馈
 END_VAR
 VAR_OUTPUT
     bBusy: BOOL;                      // TRUE=当前动作尚未结束
@@ -42,6 +45,18 @@ VAR_OUTPUT
 END_VAR
 VAR
     eState: E_InjectState := eState_Idle; // 当前射胶状态机状态
+    fbAxisInst: FB_HydAxis;               // 射胶轴层实例
+    stAxisStatusLocal: ST_HydAxisStatus;  // 射胶轴层状态缓存
+    stAxisConfigLocal: ST_HydAxisConfig := (
+        nAxisID := 4,
+        rMaxCylinderStroke := 10000.0,
+        rMaxVelocity := 1000.0,
+        rMaxPressure := 1000.0,
+        rPosTolerance := 0.5,
+        rVelTolerance := 0.5,
+        rPresTolerance := 0.5
+    );
+    bAxisEnableLocal: BOOL := FALSE;      // 射胶轴层使能，由模块内部根据停机/急停收口
     uiStageIndex: UINT := 0;              // 当前执行到的射出段号
     uiHoldIndex: UINT := 0;               // 当前执行到的保压段号
     tPulse: TON;                          // 100ms 节拍定时器，用于累计动作时间
@@ -365,6 +380,9 @@ ELSE
 END_IF;
 
 (* 将当前工艺命令回写到共享轴结构，由轴层统一做最终执行与诊断。 *)
+stInjectAxis.rActualPosition := rInjectActualPosition;
+stInjectAxis.rActualVelocity := rInjectActualVelocity;
+stInjectAxis.rActualPressure := rInjectActualPressure;
 stInjectAxis.rSetPressure := TO_LREAL(uiPresCmd);
 stInjectAxis.rSetVelocity := TO_LREAL(uiSpdCmd);
 stInjectAxis.rSetPosition := TO_LREAL(udiPosCmd);
@@ -377,4 +395,20 @@ ELSE
     stInjectAxis.eAxisState := Idle;
 END_IF;
 stInjectAxis.nFaultCode := TO_INT(dwAlarmID);
+bAxisEnableLocal := (NOT bStop) AND (NOT bEStop);
+
+fbAxisInst(
+    stAxisRef := stInjectAxis,
+    bEnable := bAxisEnableLocal,
+    bReset := bReset,
+    stConfig := stAxisConfigLocal,
+    stStatus => stAxisStatusLocal
+);
+
+bBusy := bBusy OR stAxisStatusLocal.bCommandActive;
+bAlarm := bAlarm OR stAxisStatusLocal.bAlarm;
+dwAlarmID := dwAlarmID OR stAxisStatusLocal.dwAlarmID;
+IF stAxisStatusLocal.uiActTime > uiActTime THEN
+    uiActTime := stAxisStatusLocal.uiActTime;
+END_IF;
 END_FUNCTION_BLOCK

@@ -10,7 +10,7 @@
      `Code\文档\开发规范与注释约定.md`
      `Code\文档\总体架构与代码分析.md`
      `Code\文档\修改记录.md`
-  2. 工程任务配置应只绑定 `PRG_MainControl` 作为有效主入口。
+  2. 工程任务配置应只绑定 `PRG_MainControl` 作为有效主入口，且基础周期固定为 1ms。
 *)
 VAR_GLOBAL
     (* HMI 参数同步边界。
@@ -26,6 +26,11 @@ VAR_GLOBAL
     gvl_stCommand: ST_MachineCommand;
     gvl_stSensor: ST_MachineSensor;
     gvl_stStatus: ST_MachineStatus;
+
+    (* 面板管理综合按键边界。
+       每个逻辑键同时收口排序号、键值和灯值，供不同面板型号功能块按同一结构交互。
+    *)
+    gvl_stPanelButtons: ST_PanelButtons;
 
     (* 各执行模块输出轴镜像。 *)
     gvl_stClampAxis: ST_AxisRefHyd;

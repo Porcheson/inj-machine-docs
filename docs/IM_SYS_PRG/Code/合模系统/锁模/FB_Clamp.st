@@ -26,6 +26,9 @@ VAR_INPUT
     bCloseStop: BOOL;                 // 合模停止信号
     udiClampElecRulerVal: UDINT;      // 开合模电子尺反馈
     uiClampPresElecRulerVal: UINT;    // 合模压力反馈
+    rClampActualPosition: LREAL;      // 合模轴实际位置反馈
+    rClampActualVelocity: LREAL;      // 合模轴实际速度反馈
+    rClampActualPressure: LREAL;      // 合模轴实际压力反馈
 END_VAR
 VAR_OUTPUT
     bBusy: BOOL;                      // TRUE=当前动作尚未结束
@@ -43,6 +46,18 @@ VAR_OUTPUT
 END_VAR
 VAR
     eState: E_ClampState := eState_Idle; // 当前合模状态机状态
+    fbAxisInst: FB_HydAxis;              // 合模轴层实例
+    stAxisStatusLocal: ST_HydAxisStatus; // 合模轴层状态缓存
+    stAxisConfigLocal: ST_HydAxisConfig := (
+        nAxisID := 1,
+        rMaxCylinderStroke := 10000.0,
+        rMaxVelocity := 1000.0,
+        rMaxPressure := 1000.0,
+        rPosTolerance := 0.5,
+        rVelTolerance := 0.5,
+        rPresTolerance := 0.5
+    );
+    bAxisEnableLocal: BOOL := FALSE;     // 合模轴层使能，由模块内部根据停机/急停收口
     tPulse: TON;                         // 100ms 节拍定时器，用于把扫描周期累加成动作时间
     uiStageIndex: UINT := 0;             // 当前执行到的工艺段号
     uiStageCount: UINT := 0;             // 当前方向允许执行的有效段数，进入动作时做边界收口
@@ -447,6 +462,9 @@ ELSE
 END_IF;
 
 (* 将工艺层输出统一回写到共享轴结构，后续由 `FB_HydAxis` 做最终限幅和诊断。 *)
+ClampAxis.rActualPosition := rClampActualPosition;
+ClampAxis.rActualVelocity := rClampActualVelocity;
+ClampAxis.rActualPressure := rClampActualPressure;
 ClampAxis.rSetPressure := TO_LREAL(uiPresCmd);
 ClampAxis.rSetVelocity := TO_LREAL(uiSpdCmd);
 ClampAxis.rSetPosition := TO_LREAL(udiPosCmd);
@@ -459,4 +477,20 @@ ELSE
     ClampAxis.eAxisState := Idle;
 END_IF;
 ClampAxis.nFaultCode := TO_INT(dwAlarmID);
+bAxisEnableLocal := (NOT bStop) AND (NOT bEStop);
+
+fbAxisInst(
+    stAxisRef := ClampAxis,
+    bEnable := bAxisEnableLocal,
+    bReset := bReset,
+    stConfig := stAxisConfigLocal,
+    stStatus => stAxisStatusLocal
+);
+
+bBusy := bBusy OR stAxisStatusLocal.bCommandActive;
+bAlarm := bAlarm OR stAxisStatusLocal.bAlarm;
+dwAlarmID := dwAlarmID OR stAxisStatusLocal.dwAlarmID;
+IF stAxisStatusLocal.uiActTime > uiActTime THEN
+    uiActTime := stAxisStatusLocal.uiActTime;
+END_IF;
 END_FUNCTION_BLOCK

@@ -6,7 +6,7 @@
 
   说明：
   1. 自动/工艺模式使用 1=调模进、2=调模退；手动点动使用 3/4。
-  2. 本块输出的是工艺命令，不直接承担轴保护与最终限幅。
+  2. 状态机部分只生成工艺命令，块尾由内部 `FB_HydAxis` 完成轴保护与最终限幅。
 *)
 FUNCTION_BLOCK FB_MoldAdjust
 VAR_IN_OUT
@@ -23,6 +23,9 @@ VAR_INPUT
     bMoldAdjustInStop: BOOL;          // 调模进停止信号
     bMoldAdjustOutStop: BOOL;         // 调模退停止信号
     uiClampPresElecRulerVal: UINT;    // 压力反馈
+    rMoldAdjustActualPosition: LREAL; // 调模轴实际位置反馈
+    rMoldAdjustActualVelocity: LREAL; // 调模轴实际速度反馈
+    rMoldAdjustActualPressure: LREAL; // 调模轴实际压力反馈
 END_VAR
 VAR_OUTPUT
     bBusy: BOOL;                      // TRUE=当前动作尚未结束
@@ -39,6 +42,18 @@ VAR_OUTPUT
 END_VAR
 VAR
     eState: E_MoldAdjustState := eState_Idle; // 当前调模状态机状态
+    fbAxisInst: FB_HydAxis;                  // 调模轴层实例
+    stAxisStatusLocal: ST_HydAxisStatus;    // 调模轴层状态缓存
+    stAxisConfigLocal: ST_HydAxisConfig := (
+        nAxisID := 2,
+        rMaxCylinderStroke := 10000.0,
+        rMaxVelocity := 1000.0,
+        rMaxPressure := 1000.0,
+        rPosTolerance := 0.5,
+        rVelTolerance := 0.5,
+        rPresTolerance := 0.5
+    );
+    bAxisEnableLocal: BOOL := FALSE;        // 调模轴层使能，由模块内部根据停机/急停收口
     tPulse: TON;                              // 100ms 节拍定时器，用于累计动作时间
     udiElapsedMs: UDINT := 0;                 // 当前调模动作已运行时间，单位 ms
     bManualActive: BOOL := FALSE;             // TRUE=当前按手动/调试逻辑执行
@@ -221,6 +236,9 @@ ELSE
 END_IF;
 
 (* 把工艺命令写回共享轴结构，由主控后的轴层功能块继续处理。 *)
+stMoldAdjustAxis.rActualPosition := rMoldAdjustActualPosition;
+stMoldAdjustAxis.rActualVelocity := rMoldAdjustActualVelocity;
+stMoldAdjustAxis.rActualPressure := rMoldAdjustActualPressure;
 stMoldAdjustAxis.rSetPressure := TO_LREAL(uiPresCmd);
 stMoldAdjustAxis.rSetVelocity := TO_LREAL(uiSpdCmd);
 stMoldAdjustAxis.rSetPosition := TO_LREAL(udiPosCmd);
@@ -233,4 +251,20 @@ ELSE
     stMoldAdjustAxis.eAxisState := Idle;
 END_IF;
 stMoldAdjustAxis.nFaultCode := TO_INT(dwAlarmID);
+bAxisEnableLocal := (NOT bStop) AND (NOT bEStop);
+
+fbAxisInst(
+    stAxisRef := stMoldAdjustAxis,
+    bEnable := bAxisEnableLocal,
+    bReset := bReset,
+    stConfig := stAxisConfigLocal,
+    stStatus => stAxisStatusLocal
+);
+
+bBusy := bBusy OR stAxisStatusLocal.bCommandActive;
+bAlarm := bAlarm OR stAxisStatusLocal.bAlarm;
+dwAlarmID := dwAlarmID OR stAxisStatusLocal.dwAlarmID;
+IF stAxisStatusLocal.uiActTime > uiActTime THEN
+    uiActTime := stAxisStatusLocal.uiActTime;
+END_IF;
 END_FUNCTION_BLOCK

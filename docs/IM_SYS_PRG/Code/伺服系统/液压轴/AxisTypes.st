@@ -9,6 +9,19 @@
   2. 最终的轴实例化、限幅和轴层诊断，由 `FB_HydAxis` 完成。
 *)
 
+TYPE ST_HydAxisConfig :
+STRUCT
+    (* 轴身份与保护边界。 *)
+    nAxisID: INT;                // 统一轴号，供主控/HMI/下位 I/O 对齐
+    rMaxCylinderStroke: LREAL;   // 最大允许行程
+    rMaxVelocity: LREAL;         // 最大允许速度
+    rMaxPressure: LREAL;         // 最大允许压力
+    rPosTolerance: LREAL;        // 位置到位容差
+    rVelTolerance: LREAL;        // 速度到位容差
+    rPresTolerance: LREAL;       // 压力到位容差
+END_STRUCT
+END_TYPE
+
 TYPE ST_HydAxisStatus :
 STRUCT
     (* 轴层使能与就绪状态。 *)
