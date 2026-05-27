@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cmd.exe /c \"dir \\\\\"D:\\\\Porcheson\\\\inj-machine-docs\\\\Code\\\\文档\\\\\"\")"
+    ]
+  },
+  "enabledPlugins": {
+    "skill-creator@claude-plugins-official": true
+  }
+}

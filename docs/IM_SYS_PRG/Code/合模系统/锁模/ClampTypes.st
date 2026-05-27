@@ -19,7 +19,7 @@ TYPE E_ClampState :
     eState_Closing,        // 合模执行中
     eState_Closed,         // 合模完成
     eState_CloseLowPress,  // 低压合模
-    eState_CloseHighPress, // 高压锁模
+    eState_CloseHighPress, // 高压锁模在
     eState_Error           // 故障
 );
 END_TYPE
