@@ -1,4 +1,8 @@
 FUNCTION_BLOCK FB_HydAxis
+VAR_IN_OUT
+ stAxisRef : ST_HydAxisRef;
+END_VAR
+
 VAR_INPUT
  bStart : BOOL;
  bStop : BOOL;
@@ -7,7 +11,7 @@ VAR_INPUT
  uiDir : UINT; // 0:无效 1:正向 2:反向 
  uiMode : UINT; // 0:无效 1:位置 2:速度 3:压力 
  uiPres : UINT;
- uiSpd : DINT;
+ uiSpd : UINT;
  udiPos : UDINT;
  uiForce : UINT;
  uiAcc : UINT;
@@ -51,10 +55,6 @@ VAR
  bFBError : BOOL;
  wFBErrorID : WORD;
  iDir : SINT;
- rPosition : REAL;
- rVeloctity : REAL;
- rFlow : REAL;
- rPerssure : REAL;
  iDoneCnt : INT := 0;
 END_VAR
 
@@ -183,10 +183,10 @@ fbReset(AXISID := siAxisId, EXECUTE := (iStep = 400));
 
 fbReadFB(AXISID := siAxisId, ENABLE := TRUE);
 IF fbReadFB.VALID THEN
-    rPosition  := fbReadFB.POSITION;
-    rVeloctity := fbReadFB.VELOCITY;
-    rFlow      := fbReadFB.FLOW;
-    rPerssure  := fbReadFB.PRESSURE;
+    stAxisRef.rPosition  := fbReadFB.POSITION;
+    stAxisRef.rVeloctity := fbReadFB.VELOCITY;
+    stAxisRef.rFlow      := fbReadFB.FLOW;
+    stAxisRef.rPerssure  := fbReadFB.PRESSURE;
 END_IF;
 //--- 4. 状态输出汇总 (严格遵循接口定义) ---
 IF iStep = 10 THEN
