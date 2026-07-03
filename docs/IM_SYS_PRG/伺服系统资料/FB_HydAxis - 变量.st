@@ -11,6 +11,7 @@ VAR_INPUT
  uiMode : UINT; // 0:无效 1:位置 2:速度 3:压力 
  uiPres : UINT;
  uiSpd : UINT;
+ uiEndSpd : UINT;
  udiPos : UDINT;
  uiForce : UINT;
  uiAcc : UINT;
@@ -20,7 +21,7 @@ END_VAR
 
 VAR_OUTPUT
  bBusy : BOOL; // TRUE=轴层当前仍保持有效执行命令 
- bDone : BOOL; // TRUE=轴层当前未执行命令且状态健康，可视为本拍已完成 
+ bDone : BOOL; // TRUE=位置模式下到达InEndVelocity(段结束); TRUE=非位置模式下指令执行完成且空闲;
  bInVelocity : BOOL;
  bInPressure : BOOL;
  bAlarm : BOOL;
@@ -28,9 +29,9 @@ VAR_OUTPUT
 END_VAR
 
 VAR
- iStep : INT; // 0初始化, 10空闲, 100运行, 105运行过渡, 200停止, 300急停, 400复位, 900报警 
+ iStep : INT; // 0初始化, 10空闲, 100运行, 105运行过渡(产生脉冲), 200停止, 300急停, 400复位, 900报警 
  fbCreate : HYD_CreateMotion;
- fbMoveAbs : HYD_MoveAbsolute;
+ fbMoveContAbs : HYD_MoveContinuousAbsolute;
  fbMoveVel : HYD_MoveVelocity;
  fbPresHdl : HYD_PressureHandle;
  fbStop : HYD_Stop;
@@ -45,16 +46,21 @@ VAR
  rTrigDone : R_TRIG;
  uiActiveMode : UINT; // 当前执行模式 (1:Pos, 2:Vel, 3:Pres) 
  bCmdExecute : BOOL; // 统一控制当前活跃模式的 Execute 引脚 
+ iDir : SINT;
  rPos : REAL;
  rVel : REAL;
+ rEndVel : REAL; // 终点速度 
  rPres : REAL;
  rAcc : REAL;
  rDec : REAL;
  rJerk : REAL;
  bFBError : BOOL;
  wFBErrorID : WORD;
- iDir : SINT;
  iDoneCnt : INT := 0;
  rMaxSpeed : REAL; // 单位mm/s 
+ rPosition : REAL;
+ rVeloctity : REAL;
+ rFlow : REAL;
+ rPerssure : REAL;
 END_VAR
 
