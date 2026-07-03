@@ -55,6 +55,6 @@ VAR
  wFBErrorID : WORD;
  iDir : SINT;
  iDoneCnt : INT := 0;
- MaxSpeed : REAL; // 单位mm/s 
+ rMaxSpeed : REAL; // 单位mm/s 
 END_VAR
 

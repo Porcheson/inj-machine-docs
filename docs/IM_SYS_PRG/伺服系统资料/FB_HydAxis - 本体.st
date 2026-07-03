@@ -4,13 +4,13 @@ rTrigStop(CLK := bStop);
 rTrigEStop(CLK := bEStop);
 rTrigReset(CLK := bReset);
 
-MaxSpeed := 1000.00;
+rMaxSpeed := 1000.00;
 rPres := MAX(UINT_TO_REAL(uiPres), 0.0)*0.1;   //压力设定
-rVel  := UINT_TO_REAL(uiSpd)*0.1*0.01*MaxSpeed;  //速度设定
+rVel  := UINT_TO_REAL(uiSpd)*0.1*0.01*rMaxSpeed;  //速度设定
 rPos  := UDINT_TO_REAL(udiPos)*0.01;  //位置设定
-IF uiAcc = 0 THEN rAcc := 200; ELSE rAcc  := MaxSpeed/UINT_TO_REAL(uiAcc); END_IF;  
-IF uiDec = 0 THEN rDec := 200; ELSE rDec  := MaxSpeed/UINT_TO_REAL(uiDec); END_IF;  
-IF uiJerk = 0 THEN rJerk := 0; ELSE rJerk := MaxSpeed/UINT_TO_REAL(uiJerk); END_IF;
+IF uiAcc = 0 THEN rAcc := 200; ELSE rAcc  := rMaxSpeed/UINT_TO_REAL(uiAcc); END_IF;  
+IF uiDec = 0 THEN rDec := 200; ELSE rDec  := rMaxSpeed/UINT_TO_REAL(uiDec); END_IF;  
+IF uiJerk = 0 THEN rJerk := 0; ELSE rJerk := rMaxSpeed/UINT_TO_REAL(uiJerk); END_IF;
 
 // 方向转换 (1:正 -> 1, 2:反 -> -1, 0 -> 0)
 //IF uiDir = 2 THEN iDir := -1; ELSE iDir := UINT_TO_SINT(uiDir); END_IF;
