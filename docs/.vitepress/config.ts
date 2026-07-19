@@ -1,5 +1,4 @@
 import { defineConfig } from 'vitepress'
-import { generateSidebar } from 'vitepress-sidebar'
 import { withMermaid } from 'vitepress-plugin-mermaid'
 
 export default withMermaid({
@@ -207,11 +206,50 @@ export default withMermaid({
       { text: '地址点表', link: '/地址点表_Sheet1' }
     ],
 
-    sidebar: generateSidebar({
-      documentRootPath: '/docs',
-      collapsed: false,
-      collapseDepth: 2,
-    }),
+    sidebar: {
+      '/': [
+        { text: '首页', link: '/', icon: 'home' },
+        {
+          text: '功能文档',
+          icon: 'book',
+          items: [
+            { text: '开合模功能整理', link: '/01_开合模功能整理' },
+            { text: '调模功能整理', link: '/02_调模功能整理' },
+            { text: '射出功能整理', link: '/03_射出功能整理' },
+            { text: '吹气功能整理', link: '/04_吹气功能整理' },
+            { text: '储料清料功能整理', link: '/05_储料清料功能整理' },
+            { text: '座台功能整理', link: '/06_座台功能整理' },
+            { text: '托模功能整理', link: '/07_托模功能整理' },
+            { text: '移模功能整理', link: '/08_移模功能整理' },
+            { text: '转盘功能整理', link: '/09_转盘功能整理' },
+            { text: '中子功能整理', link: '/10_中子功能整理' },
+            { text: '绞牙功能整理', link: '/11_绞牙功能整理' },
+            { text: '计时计数功能整理', link: '/12_计时计数功能整理' },
+            { text: '温度功能整理', link: '/13_温度功能整理' },
+            { text: '自动流程功能整理', link: '/14_自动流程功能整理' },
+          ]
+        },
+        {
+          text: '会议记录',
+          icon: 'calendar',
+          items: [
+            { text: '3月18日开合模功能块参数设计', link: '/会议记录/20260318开合模功能块参数设计与中子进功能实现讨论' },
+            { text: '5月27日项目进展沟通会', link: '/会议记录/20260527项目进展沟通会' },
+            { text: '6月17日项目进展沟通会', link: '/会议记录/20260617项目进展沟通会' },
+            { text: '7月8日项目进展沟通会', link: '/会议记录/20260708项目进展沟通会' },
+          ]
+        },
+        {
+          text: '技术文档',
+          icon: 'file-code',
+          items: [
+            { text: '地址点表', link: '/地址点表_Sheet1' },
+            { text: 'ST定义', link: '/ST定义/' },
+            { text: 'IM_SYS_PRG源码', link: '/IM_SYS_PRG/' },
+          ]
+        },
+      ]
+    },
 
     socialLinks: [
       { icon: 'github', link: 'https://github.com/Porcheson/inj-machine-docs' }

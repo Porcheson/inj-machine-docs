@@ -43,6 +43,64 @@ features:
 
 ---
 
+## 📊 项目统计
+
+<div class="stats-grid">
+  <div class="stat-item">
+    <div class="stat-icon">📄</div>
+    <div class="stat-number">20+</div>
+    <div class="stat-label">技术文档</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-icon">🔧</div>
+    <div class="stat-number">14</div>
+    <div class="stat-label">功能模块</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-icon">📋</div>
+    <div class="stat-number">50+</div>
+    <div class="stat-label">ST源码文件</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-icon">🗓️</div>
+    <div class="stat-number">4</div>
+    <div class="stat-label">会议记录</div>
+  </div>
+</div>
+
+## 📝 最近更新
+
+<div class="recent-updates">
+  <div class="update-item">
+    <div class="update-date">2026-07-19</div>
+    <div class="update-info">
+      <a href="/会议记录/20260708项目进展沟通会" class="update-title">7月8日项目进展沟通会</a>
+      <div class="update-desc">会议记录：各单元开发状态、7月15日上机节点准备情况</div>
+    </div>
+  </div>
+  <div class="update-item">
+    <div class="update-date">2026-07-19</div>
+    <div class="update-info">
+      <a href="/会议记录/20260617项目进展沟通会" class="update-title">6月17日项目进展沟通会</a>
+      <div class="update-desc">会议记录：新版本软件开发进展、AI集成方案、内存优化策略</div>
+    </div>
+  </div>
+  <div class="update-item">
+    <div class="update-date">2026-07-19</div>
+    <div class="update-info">
+      <a href="/会议记录/20260527项目进展沟通会" class="update-title">5月27日项目进展沟通会</a>
+      <div class="update-desc">会议记录：项目延期至9月交付、编译器开发、运动控制模块进展</div>
+    </div>
+  </div>
+  <div class="update-item">
+    <div class="update-date">2026-07-03</div>
+    <div class="update-info">
+      <a href="/IM_SYS_PRG/Code/伺服系统/液压轴/FB_HydAxis" class="update-title">FB_HydAxis液压轴功能块</a>
+      <div class="update-desc">更新液压控制库文档，增加MaxSpeed变量</div>
+    </div>
+  </div>
+</div>
+
 ## 关于本项目
 
 - **本项目旨在整理和文档化宝捷信立式注塑机的各项功能和技术细节，为技术人员提供全面、准确的参考资料。**
