@@ -5,6 +5,7 @@ import { useData } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 import backtotop from "./backtotop.vue"
 import ArticleMetadata from "./ArticleMetadata.vue"
+import update from "./update.vue"
 import { ref, onMounted } from 'vue'
 
 const { isDark } = useData()
@@ -245,6 +246,7 @@ onMounted(() => {
       <ArticleMetadata />
     </template>
     <template #doc-footer-before>
+      <update />
       <backtotop />
     </template>
   </DefaultTheme.Layout>

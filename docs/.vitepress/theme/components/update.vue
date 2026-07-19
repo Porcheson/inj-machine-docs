@@ -16,6 +16,10 @@ const date = computed(
 
 <style>
 .LastUpdated {
-  color: var(--vp-c-text-2);
+  color: var(--vp-c-text-3);
+  text-align: center;
+  padding: 16px 0;
+  border-top: 1px solid var(--vp-c-divider);
+  font-size: 13px;
 }
 </style>
