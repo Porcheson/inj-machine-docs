@@ -70,36 +70,7 @@ features:
 
 ## 📝 最近更新
 
-<div class="recent-updates">
-  <div class="update-item">
-    <div class="update-date">2026-07-19</div>
-    <div class="update-info">
-      <a href="/会议记录/20260708项目进展沟通会" class="update-title">7月8日项目进展沟通会</a>
-      <div class="update-desc">会议记录：各单元开发状态、7月15日上机节点准备情况</div>
-    </div>
-  </div>
-  <div class="update-item">
-    <div class="update-date">2026-07-19</div>
-    <div class="update-info">
-      <a href="/会议记录/20260617项目进展沟通会" class="update-title">6月17日项目进展沟通会</a>
-      <div class="update-desc">会议记录：新版本软件开发进展、AI集成方案、内存优化策略</div>
-    </div>
-  </div>
-  <div class="update-item">
-    <div class="update-date">2026-07-19</div>
-    <div class="update-info">
-      <a href="/会议记录/20260527项目进展沟通会" class="update-title">5月27日项目进展沟通会</a>
-      <div class="update-desc">会议记录：项目延期至9月交付、编译器开发、运动控制模块进展</div>
-    </div>
-  </div>
-  <div class="update-item">
-    <div class="update-date">2026-07-03</div>
-    <div class="update-info">
-      <a href="/IM_SYS_PRG/Code/伺服系统/液压轴/FB_HydAxis" class="update-title">FB_HydAxis液压轴功能块</a>
-      <div class="update-desc">更新液压控制库文档，增加MaxSpeed变量</div>
-    </div>
-  </div>
-</div>
+<RecentUpdates />
 
 ## 关于本项目
 

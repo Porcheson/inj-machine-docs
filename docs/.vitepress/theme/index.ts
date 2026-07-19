@@ -15,6 +15,7 @@ import update from "./components/update.vue" // 更新时间
 import ArticleMetadata from "./components/ArticleMetadata.vue" //字数阅读时间
 import Linkcard from "./components/Linkcard.vue" //链接卡片
 import MyLayout from "./components/MyLayout.vue" //视图过渡
+import RecentUpdates from "./components/RecentUpdates.vue" //最近更新
 
 export default {
   extends: DefaultTheme,
@@ -26,6 +27,7 @@ export default {
     app.component('update' , update) // 更新
     app.component('ArticleMetadata' , ArticleMetadata) //字数阅读时间
     app.component('Linkcard' , Linkcard) //链接卡片
+    app.component('RecentUpdates' , RecentUpdates) //最近更新
   },
 
   //导航
