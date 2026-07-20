@@ -16,6 +16,9 @@ import ArticleMetadata from "./components/ArticleMetadata.vue" //字数阅读时
 import Linkcard from "./components/Linkcard.vue" //链接卡片
 import MyLayout from "./components/MyLayout.vue" //视图过渡
 import RecentUpdates from "./components/RecentUpdates.vue" //最近更新
+import Particles from "./components/Particles.vue" //粒子背景
+import AnimatedNumber from "./components/AnimatedNumber.vue" //数字滚动动画
+import HomeContent from "./components/HomeContent.vue" //首页内容
 
 export default {
   extends: DefaultTheme,
@@ -28,6 +31,9 @@ export default {
     app.component('ArticleMetadata' , ArticleMetadata) //字数阅读时间
     app.component('Linkcard' , Linkcard) //链接卡片
     app.component('RecentUpdates' , RecentUpdates) //最近更新
+    app.component('Particles' , Particles) //粒子背景
+    app.component('AnimatedNumber' , AnimatedNumber) //数字滚动动画
+    app.component('HomeContent' , HomeContent) //首页内容
   },
 
   //导航

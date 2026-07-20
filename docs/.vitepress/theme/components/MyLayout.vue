@@ -6,9 +6,16 @@ import DefaultTheme from 'vitepress/theme'
 import backtotop from "./backtotop.vue"
 import ArticleMetadata from "./ArticleMetadata.vue"
 import update from "./update.vue"
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 
-const { isDark } = useData()
+const { isDark, page } = useData()
+
+const lastUpdated = computed(() => {
+  if (page.value.lastUpdated) {
+    return new Date(page.value.lastUpdated).toLocaleString('zh-CN')
+  }
+  return new Date().toLocaleString('zh-CN')
+})
 
 // 简化的主题切换
 const toggleTheme = () => {
@@ -249,6 +256,11 @@ onMounted(() => {
       <update />
       <backtotop />
     </template>
+    <template #footer-after>
+      <div class="footer-update-time">
+        更新时间: {{ lastUpdated }}
+      </div>
+    </template>
   </DefaultTheme.Layout>
 </template>
 
@@ -260,5 +272,14 @@ onMounted(() => {
 /* 修正因视图过渡导致的月牙图标偏移 */
 .VPSwitchAppearance .check .icon {
   top: -2px;
+}
+
+.footer-update-time {
+  color: var(--vp-c-text-3);
+  text-align: center;
+  padding: 12px 0;
+  font-size: 13px;
+  border-top: 1px solid var(--vp-c-divider);
+  margin-top: 16px;
 }
 </style>

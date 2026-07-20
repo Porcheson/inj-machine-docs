@@ -8,57 +8,57 @@
   --vp-aside-width: 280px;
 }
 
-/* 品牌色彩系统 */
+/* 品牌色彩系统 - 青绿色科技主题 */
 :root {
-  /* 主品牌色 */
-  --vp-c-brand-1: #1890ff;
-  --vp-c-brand-2: #096dd9;
-  --vp-c-brand-3: #0050b3;
-  --vp-c-brand-soft: rgba(24, 144, 255, 0.1);
-  
+  /* 主品牌色 - 青绿（浅色模式） */
+  --vp-c-brand-1: #00b894;
+  --vp-c-brand-2: #009a7d;
+  --vp-c-brand-3: #007d65;
+  --vp-c-brand-soft: rgba(0, 184, 148, 0.1);
+
   /* 辅助色彩 */
-  --vp-c-success: #52c41a;
-  --vp-c-warning: #faad14;
-  --vp-c-danger: #f5222d;
-  --vp-c-info: #1890ff;
-  
+  --vp-c-success: #00b894;
+  --vp-c-warning: #fdcb6e;
+  --vp-c-danger: #e17055;
+  --vp-c-info: #0984e3;
+
   /* 中性色彩 */
-  --vp-c-text-1: #333333;
-  --vp-c-text-2: #666666;
-  --vp-c-text-3: #999999;
-  --vp-c-divider: #e8e8e8;
+  --vp-c-text-1: #2d3436;
+  --vp-c-text-2: #636e72;
+  --vp-c-text-3: #b2bec3;
+  --vp-c-divider: #dfe6e9;
   --vp-c-bg-1: #ffffff;
-  --vp-c-bg-2: #f5f5f5;
-  --vp-c-bg-3: #f0f0f0;
+  --vp-c-bg-2: #f8f9fa;
+  --vp-c-bg-3: #e9ecef;
 }
 
 .dark {
-  /* 主品牌色 */
-  --vp-c-brand-1: #40a9ff;
-  --vp-c-brand-2: #1890ff;
-  --vp-c-brand-3: #096dd9;
-  --vp-c-brand-soft: rgba(64, 169, 255, 0.15);
-  
+  /* 主品牌色 - 青绿（深色模式，更亮） */
+  --vp-c-brand-1: #00d4aa;
+  --vp-c-brand-2: #00b894;
+  --vp-c-brand-3: #009a7d;
+  --vp-c-brand-soft: rgba(0, 212, 170, 0.15);
+
   /* 辅助色彩 */
-  --vp-c-success: #73d13d;
-  --vp-c-warning: #ffc53d;
-  --vp-c-danger: #ff4d4f;
-  --vp-c-info: #40a9ff;
-  
+  --vp-c-success: #00d4aa;
+  --vp-c-warning: #fdcb6e;
+  --vp-c-danger: #ff7675;
+  --vp-c-info: #74b9ff;
+
   /* 中性色彩 */
   --vp-c-text-1: #f0f0f0;
   --vp-c-text-2: #a0a0a0;
   --vp-c-text-3: #606060;
-  --vp-c-divider: #303030;
-  --vp-c-bg-1: #1a1a1a;
-  --vp-c-bg-2: #242424;
-  --vp-c-bg-3: #2e2e2e;
+  --vp-c-divider: #2d3436;
+  --vp-c-bg-1: #0f1520;
+  --vp-c-bg-2: #0a0f1a;
+  --vp-c-bg-3: #050810;
 }
 
-/* 彩虹色卡初始色 */
+/* 渐变色动画 - 青绿色系 */
 :root {
-  --rainbow-prev: #009ff7;
-  --rainbow-next: #c76dd1;
+  --rainbow-prev: #00b894;
+  --rainbow-next: #0984e3;
   animation: rainbow 12s linear infinite;
 }
 
@@ -827,26 +827,26 @@ html {
   transform: scale(1.05);
 }
 
-/* 动画定义 */
+/* 动画定义 - 青绿色系渐变 */
 @keyframes rainbow {
   0% {
-    --rainbow-prev: #009ff7;
-    --rainbow-next: #c76dd1;
+    --rainbow-prev: #00b894;
+    --rainbow-next: #0984e3;
   }
   25% {
-    --rainbow-prev: #c76dd1;
-    --rainbow-next: #ff7a45;
+    --rainbow-prev: #0984e3;
+    --rainbow-next: #6c5ce7;
   }
   50% {
-    --rainbow-prev: #ff7a45;
-    --rainbow-next: #52c41a;
+    --rainbow-prev: #6c5ce7;
+    --rainbow-next: #00cec9;
   }
   75% {
-    --rainbow-prev: #52c41a;
-    --rainbow-next: #009ff7;
+    --rainbow-prev: #00cec9;
+    --rainbow-next: #00b894;
   }
   100% {
-    --rainbow-prev: #009ff7;
-    --rainbow-next: #c76dd1;
+    --rainbow-prev: #00b894;
+    --rainbow-next: #0984e3;
   }
 }

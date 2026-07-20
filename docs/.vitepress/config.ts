@@ -9,7 +9,8 @@ export default withMermaid({
   base: process.env.NETLIFY ? '/' : '/inj-machine-docs/',
   ignoreDeadLinks: true,
   head: [
-    ['link', { rel: 'icon', href: '/favicon.svg' }],
+    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
+    ['link', { rel: 'icon', type: 'image/png', href: '/logo.png', sizes: '192x192' }],
     // 内联关键CSS，实现首屏优先显示
     ['style', {}, `
       :root {
@@ -134,9 +135,7 @@ export default withMermaid({
         height: var(--vp-nav-height);
       }
     `],
-    // 预加载关键资源
-    ['link', { rel: 'preload', href: '/assets/app.js', as: 'script' }],
-    ['link', { rel: 'preload', href: '/assets/style.css', as: 'style', onload: 'this.onload=null;this.rel="stylesheet"' }]
+    
   ],
   sitemap: {
     hostname: 'http://localhost:5174'
@@ -234,6 +233,9 @@ export default withMermaid({
           icon: 'calendar',
           items: [
             { text: '3月18日开合模功能块参数设计', link: '/会议记录/20260318开合模功能块参数设计与中子进功能实现讨论' },
+            { text: '3月27日射出功能块参数讨论', link: '/会议记录/20260327射出功能块参数讨论' },
+            { text: '4月10日液压运动控制功能库技术方案', link: '/会议记录/20260410注塑机液压运动控制功能库开发技术方案讨论' },
+            { text: '4月13日项目开发计划与接口验证', link: '/会议记录/20260413项目开发计划与接口验证方法讨论' },
             { text: '5月27日项目进展沟通会', link: '/会议记录/20260527项目进展沟通会' },
             { text: '6月17日项目进展沟通会', link: '/会议记录/20260617项目进展沟通会' },
             { text: '7月8日项目进展沟通会', link: '/会议记录/20260708项目进展沟通会' },
@@ -244,8 +246,10 @@ export default withMermaid({
           icon: 'file-code',
           items: [
             { text: '地址点表', link: '/地址点表_Sheet1' },
-            { text: 'ST定义', link: '/ST定义/' },
-            { text: 'IM_SYS_PRG源码', link: '/IM_SYS_PRG/' },
+            { text: '动作提示列表', link: '/动作提示列表' },
+            { text: '命名规范', link: '/命名规范' },
+            { text: '流程图', link: '/15_流程图' },
+            { text: 'IM_SYS_PRG源码', link: '/IM_SYS_PRG/CLAUDE' },
           ]
         },
       ]
@@ -256,7 +260,7 @@ export default withMermaid({
     ],
     footer: {
       message: '技术交流：13971612060',
-      copyright: `© ${new Date().getFullYear()} 宝捷信立式注塑机技术文档`
+      copyright: `© ${new Date().getFullYear()} 宝捷信立式注塑机技术文档 | 更新时间: ${new Date().toLocaleString('zh-CN')}`
     }
   },
   mermaid: {
