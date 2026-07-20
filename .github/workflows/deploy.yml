@@ -41,7 +41,7 @@ jobs:
         with:
           enablement: true
       - name: Install dependencies
-        run: npm install
+        run: npm install --legacy-peer-deps
       - name: Build with VitePress
         run: npm run docs:build
       - name: Upload artifact
