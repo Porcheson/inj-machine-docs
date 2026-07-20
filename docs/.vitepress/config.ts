@@ -1,7 +1,6 @@
 import { defineConfig } from 'vitepress'
-import { withMermaid } from 'vitepress-plugin-mermaid'
 
-export default withMermaid({
+export default defineConfig({
   lang: 'zh-CN',
   title: "宝捷信立式注塑机",
   description: "宝捷信立式注塑机技术文档与功能整理",
@@ -263,7 +262,4 @@ export default withMermaid({
       copyright: `© ${new Date().getFullYear()} 宝捷信立式注塑机技术文档 | 更新时间: ${new Date().toLocaleString('zh-CN')}`
     }
   },
-  mermaid: {
-    theme: 'base'
-  }
 })
