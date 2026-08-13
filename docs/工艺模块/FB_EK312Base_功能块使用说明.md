@@ -249,5 +249,5 @@ fbExample(
 (* 外部通信写逻辑读取 stOutPara.aOutputAddr[]；
    HMI/诊断读取 stOutPara.aSeg[]、uiHeatState、uiVersion 和报警输出。 *)
 
-  ![1786516270792](image/FB_EK312Base_功能块使用说明/1786516270792.png)
+  ![1786516270792](image.png)
 ```
