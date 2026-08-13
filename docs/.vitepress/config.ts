@@ -229,6 +229,12 @@ export default withMermaid({
           ]
         },
         {
+          text: '工艺模块',
+          items: [
+            { text: 'FB_EK312Base 功能块使用说明', link: '/工艺模块/FB_EK312Base_功能块使用说明' },
+          ]
+        },
+        {
           text: '会议记录',
           icon: 'calendar',
           items: [
