@@ -1,5 +1,5 @@
 # 《FB_EK312Base 功能块使用说明》
-
+<img src="./Images/FB_EK312Base.png">
 | 项目     | 内容                                                                                          |
 | -------- | --------------------------------------------------------------------------------------------- |
 | 模块名称 | `FB_EK312Base`                                                                              |
@@ -249,5 +249,4 @@ fbExample(
 (* 外部通信写逻辑读取 stOutPara.aOutputAddr[]；
    HMI/诊断读取 stOutPara.aSeg[]、uiHeatState、uiVersion 和报警输出。 *)
 
-  ![1786516270792](image.png)
 ```
