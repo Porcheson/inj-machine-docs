@@ -231,6 +231,7 @@ export default withMermaid({
         {
           text: '工艺模块',
           items: [
+            { text: 'FB_ClampBase 功能块使用说明', link: '/工艺模块/FB_ClampBase_功能块使用说明' },
             { text: 'FB_EK312Base 功能块使用说明', link: '/工艺模块/FB_EK312Base_功能块使用说明' },
           ]
         },
@@ -247,6 +248,7 @@ export default withMermaid({
             { text: '7月8日项目进展沟通会', link: '/会议记录/20260708项目进展沟通会' },
             { text: '7月23日上机测试结果汇报与后续规划', link: '/会议记录/20260723上机测试结果汇报与后续规划讨论会' },
             { text: '8月5日项目进展沟通会', link: '/会议记录/20260805项目进展沟通会' },
+            { text: '8月13日技术方案讨论会', link: '/会议记录/20260813技术方案讨论会' },
           ]
         },
         {

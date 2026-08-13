@@ -1,5 +1,4 @@
 # 《FB_EK312Base 功能块使用说明》
-<img src="./Images/FB_EK312Base.png">
 
 | 项目     | 内容                                                                                          |
 | -------- | --------------------------------------------------------------------------------------------- |
@@ -103,6 +102,17 @@
 | `uiVersion`   | `UINT`                           | FB 写入  | 模块版本号    |
 
 ## 3. 功能块接口
+
+<div style="display:flex; flex-wrap:wrap; align-items:flex-start; justify-content:center; gap:24px; margin:28px auto;">
+  <figure style="flex:1 1 420px; max-width:48%; margin:0; text-align:center;">
+    <img src="image/FB_EK312Base_功能块LD.png" alt="FB_EK312Base LD 功能块接口图" style="width:100%; height:auto; border:1px solid #cfd8e3; background:#fff;" />
+    <figcaption>LD 功能块接口图</figcaption>
+  </figure>
+  <figure style="flex:1 1 420px; max-width:48%; margin:0; text-align:center;">
+    <img src="image/FB_EK312Base_功能块ST.png" alt="FB_EK312Base ST 调用图" style="width:100%; height:auto; border:1px solid #cfd8e3; background:#fff;" />
+    <figcaption>ST 调用图</figcaption>
+  </figure>
+</div>
 
 ### 3.1 `VAR_IN_OUT`
 
