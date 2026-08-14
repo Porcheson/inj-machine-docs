@@ -18,6 +18,7 @@ import MyLayout from "./components/MyLayout.vue" //视图过渡
 import RecentUpdates from "./components/RecentUpdates.vue" //最近更新
 import Particles from "./components/Particles.vue" //粒子背景
 import HomeContent from "./components/HomeContent.vue" //首页内容
+import CsvTable from "./components/CsvTable.vue" //CSV动态表格
 
 export default {
   extends: DefaultTheme,
@@ -32,6 +33,7 @@ export default {
     app.component('RecentUpdates' , RecentUpdates) //最近更新
     app.component('Particles' , Particles) //粒子背景
     app.component('HomeContent' , HomeContent) //首页内容
+    app.component('CsvTable' , CsvTable) //CSV动态表格
   },
 
   //导航

@@ -18,7 +18,7 @@ hero:
       icon: book
     - theme: alt
       text: 点表
-      link: /点表/plc-tags-D0.csv
+      link: /点表/
       icon: table
 ---
 

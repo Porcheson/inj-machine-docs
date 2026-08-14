@@ -202,7 +202,7 @@ export default withMermaid({
           { text: '自动流程', link: '/14_自动流程功能整理' }
         ]
       },
-      { text: '点表', link: '/点表/plc-tags-D0.csv' }
+      { text: '点表', link: '/点表/' }
     ],
 
     sidebar: {
@@ -264,24 +264,7 @@ export default withMermaid({
           text: '技术文档',
           icon: 'file-code',
           items: [
-            {
-              text: '点表',
-              icon: 'table',
-              items: [
-                { text: 'PLC标签 D0', link: '/点表/plc-tags-D0.csv' },
-                { text: 'PLC标签 D1', link: '/点表/plc-tags-D1.csv' },
-                { text: 'PLC标签 D2', link: '/点表/plc-tags-D2.csv' },
-                { text: 'PLC标签 D3', link: '/点表/plc-tags-D3.csv' },
-                { text: 'PLC标签 D4', link: '/点表/plc-tags-D4.csv' },
-                { text: 'PLC标签 D5', link: '/点表/plc-tags-D5.csv' },
-                { text: 'PLC标签 D6', link: '/点表/plc-tags-D6.csv' },
-                { text: 'PLC标签 D7', link: '/点表/plc-tags-D7.csv' },
-                { text: 'IO点表', link: '/点表/io-points.csv' },
-                { text: '报警提示', link: '/点表/alarms.csv' },
-                { text: '轴报警', link: '/点表/axis-alarms.csv' },
-                { text: '动作相位映射', link: '/点表/machine-phase.xml' },
-              ]
-            },
+            { text: '点表', link: '/点表/' },
             { text: '动作提示列表', link: '/动作提示列表' },
             { text: '命名规范', link: '/命名规范' },
             { text: '流程图', link: '/15_流程图' },

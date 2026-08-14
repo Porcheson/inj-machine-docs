@@ -1,0 +1,19 @@
+[main c56e0ae] 点表数据文件移至docs/public以随站点发布
+ 17 files changed, 99 insertions(+)
+ create mode 100644 add.log
+ create mode 100644 build2.log
+ create mode 100644 commit.log
+ rename "docs/\347\202\271\350\241\250/alarms.csv" => "docs/public/\347\202\271\350\241\250/alarms.csv" (100%)
+ rename "docs/\347\202\271\350\241\250/axis-alarms.csv" => "docs/public/\347\202\271\350\241\250/axis-alarms.csv" (100%)
+ rename "docs/\347\202\271\350\241\250/io-points.csv" => "docs/public/\347\202\271\350\241\250/io-points.csv" (100%)
+ rename "docs/\347\202\271\350\241\250/machine-phase.xml" => "docs/public/\347\202\271\350\241\250/machine-phase.xml" (100%)
+ rename "docs/\347\202\271\350\241\250/plc-tags-D0.csv" => "docs/public/\347\202\271\350\241\250/plc-tags-D0.csv" (100%)
+ rename "docs/\347\202\271\350\241\250/plc-tags-D1.csv" => "docs/public/\347\202\271\350\241\250/plc-tags-D1.csv" (100%)
+ rename "docs/\347\202\271\350\241\250/plc-tags-D2.csv" => "docs/public/\347\202\271\350\241\250/plc-tags-D2.csv" (100%)
+ rename "docs/\347\202\271\350\241\250/plc-tags-D3.csv" => "docs/public/\347\202\271\350\241\250/plc-tags-D3.csv" (100%)
+ rename "docs/\347\202\271\350\241\250/plc-tags-D4.csv" => "docs/public/\347\202\271\350\241\250/plc-tags-D4.csv" (100%)
+ rename "docs/\347\202\271\350\241\250/plc-tags-D5.csv" => "docs/public/\347\202\271\350\241\250/plc-tags-D5.csv" (100%)
+ rename "docs/\347\202\271\350\241\250/plc-tags-D6.csv" => "docs/public/\347\202\271\350\241\250/plc-tags-D6.csv" (100%)
+ rename "docs/\347\202\271\350\241\250/plc-tags-D7.csv" => "docs/public/\347\202\271\350\241\250/plc-tags-D7.csv" (100%)
+ create mode 100644 push.log
+ create mode 100644 push2.log
