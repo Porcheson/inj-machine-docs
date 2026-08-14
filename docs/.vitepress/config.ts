@@ -1,5 +1,31 @@
 import { defineConfig } from 'vitepress'
 import { withMermaid } from 'vitepress-plugin-mermaid'
+import path from 'node:path'
+import fg from 'fast-glob'
+
+// ===== 自动导航 / 侧栏生成：文档放入 docs 对应目录后重新构建即自动出现 =====
+const DOCS_DIR = path.resolve(__dirname, '../..')
+const scanMd = (pattern: string) =>
+  fg.sync(pattern, { cwd: DOCS_DIR, onlyFiles: true }).sort()
+
+const cleanTitle = (rel: string) => {
+  let name = rel.split(/[\\/]/).pop()!.replace(/\.md$/, '')
+  name = name.replace(/^\d+_/, '')
+  name = name.replace(/整理$/, '')
+  name = name.replace(/^(\d{4})(\d{2})(\d{2})/, (_m: string, _y: string, mo: string, d: string) => `${parseInt(mo)}月${parseInt(d)}日`)
+  return name.replace(/_/g, ' ')
+}
+const itemsOf = (pattern: string) =>
+  scanMd(pattern).map((p) => ({
+    text: cleanTitle(p),
+    link: '/' + p.replace(/\\/g, '/').replace(/\.md$/, '')
+  }))
+
+const navFuncDocs = itemsOf('{0*,1[0-4]*}.md')
+const navProcess = itemsOf('工艺模块/*.md')
+const navTech = itemsOf('技术方案/*.md')
+const navMeeting = itemsOf('会议记录/*.md')
+
 
 export default withMermaid({
   lang: 'zh-CN',
@@ -234,109 +260,19 @@ export default withMermaid({
     },
     nav: [
       { text: '首页', link: '/' },
-      {
-        text: '功能文档',
-        items: [
-          { text: '开合模功能', link: '/01_开合模功能整理' },
-          { text: '调模功能', link: '/02_调模功能整理' },
-          { text: '射出功能', link: '/03_射出功能整理' },
-          { text: '吹气功能', link: '/04_吹气功能整理' },
-          { text: '储料清料功能', link: '/05_储料清料功能整理' },
-          { text: '座台功能', link: '/06_座台功能整理' },
-          { text: '托模功能', link: '/07_托模功能整理' },
-          { text: '移模功能', link: '/08_移模功能整理' },
-          { text: '转盘功能', link: '/09_转盘功能整理' },
-          { text: '中子功能', link: '/10_中子功能整理' },
-          { text: '绞牙功能', link: '/11_绞牙功能整理' },
-          { text: '计时计数功能', link: '/12_计时计数功能整理' },
-          { text: '温度功能', link: '/13_温度功能整理' },
-          { text: '自动流程', link: '/14_自动流程功能整理' }
-        ]
-      },
-      {
-        text: '工艺模块',
-        items: [
-          { text: 'FB_ClampBase 功能块使用说明', link: '/工艺模块/FB_ClampBase_功能块使用说明' },
-          { text: 'FB_EK312Base 功能块使用说明', link: '/工艺模块/FB_EK312Base_功能块使用说明' },
-          { text: 'HydMotionLight IEC 接口使用文档 V1.1', link: '/工艺模块/HydMotion_IEC_接口使用文档 V1.1' },
-          { text: 'HydTechnology 技术库使用说明书', link: '/工艺模块/HydTechnology_技术库使用说明书' }
-        ]
-      },
-      {
-        text: '技术方案',
-        items: [
-          { text: 'PLC技术文档评审与改进建议', link: '/技术方案/PLC技术文档评审与改进建议' },
-          { text: '注塑机液压控制分层方案对比分析', link: '/技术方案/注塑机液压控制分层方案对比分析' },
-          { text: '注塑机专用工艺库架构设计', link: '/技术方案/注塑机专用工艺库架构设计' }
-        ]
-      },
-      {
-        text: '会议记录',
-        items: [
-          { text: '7月8日项目进展沟通会', link: '/会议记录/20260708项目进展沟通会' },
-          { text: '7月23日上机测试结果汇报与后续规划', link: '/会议记录/20260723上机测试结果汇报与后续规划讨论会' },
-          { text: '8月5日项目进展沟通会', link: '/会议记录/20260805项目进展沟通会' },
-          { text: '8月13日技术方案讨论会', link: '/会议记录/20260813技术方案讨论会' }
-        ]
-      },
+      { text: '功能文档', items: navFuncDocs },
+      { text: '工艺模块', items: navProcess },
+      { text: '技术方案', items: navTech },
+      { text: '会议记录', items: navMeeting },
       { text: '点表', link: '/点表/' }
-    ],    sidebar: {
+    ],
+    sidebar: {
       '/': [
         { text: '首页', link: '/', icon: 'home' },
-        {
-          text: '功能文档',
-          icon: 'book',
-          items: [
-            { text: '开合模功能整理', link: '/01_开合模功能整理' },
-            { text: '调模功能整理', link: '/02_调模功能整理' },
-            { text: '射出功能整理', link: '/03_射出功能整理' },
-            { text: '吹气功能整理', link: '/04_吹气功能整理' },
-            { text: '储料清料功能整理', link: '/05_储料清料功能整理' },
-            { text: '座台功能整理', link: '/06_座台功能整理' },
-            { text: '托模功能整理', link: '/07_托模功能整理' },
-            { text: '移模功能整理', link: '/08_移模功能整理' },
-            { text: '转盘功能整理', link: '/09_转盘功能整理' },
-            { text: '中子功能整理', link: '/10_中子功能整理' },
-            { text: '绞牙功能整理', link: '/11_绞牙功能整理' },
-            { text: '计时计数功能整理', link: '/12_计时计数功能整理' },
-            { text: '温度功能整理', link: '/13_温度功能整理' },
-            { text: '自动流程功能整理', link: '/14_自动流程功能整理' },
-          ]
-        },
-        {
-          text: '工艺模块',
-          items: [
-            { text: 'FB_ClampBase 功能块使用说明', link: '/工艺模块/FB_ClampBase_功能块使用说明' },
-            { text: 'FB_EK312Base 功能块使用说明', link: '/工艺模块/FB_EK312Base_功能块使用说明' },
-            { text: 'HydMotionLight IEC 接口使用文档 V1.1', link: '/工艺模块/HydMotion_IEC_接口使用文档 V1.1' },
-            { text: 'HydTechnology 技术库使用说明书', link: '/工艺模块/HydTechnology_技术库使用说明书' },
-          ]
-        },
-        {
-          text: '技术方案',
-          icon: 'file-code',
-          items: [
-            { text: 'PLC技术文档评审与改进建议', link: '/技术方案/PLC技术文档评审与改进建议' },
-            { text: '注塑机液压控制分层方案对比分析', link: '/技术方案/注塑机液压控制分层方案对比分析' },
-            { text: '注塑机专用工艺库架构设计', link: '/技术方案/注塑机专用工艺库架构设计' },
-          ]
-        },
-        {
-          text: '会议记录',
-          icon: 'calendar',
-          items: [
-            { text: '3月18日开合模功能块参数设计', link: '/会议记录/20260318开合模功能块参数设计与中子进功能实现讨论' },
-            { text: '3月27日射出功能块参数讨论', link: '/会议记录/20260327射出功能块参数讨论' },
-            { text: '4月10日液压运动控制功能库技术方案', link: '/会议记录/20260410注塑机液压运动控制功能库开发技术方案讨论' },
-            { text: '4月13日项目开发计划与接口验证', link: '/会议记录/20260413项目开发计划与接口验证方法讨论' },
-            { text: '5月27日项目进展沟通会', link: '/会议记录/20260527项目进展沟通会' },
-            { text: '6月17日项目进展沟通会', link: '/会议记录/20260617项目进展沟通会' },
-            { text: '7月8日项目进展沟通会', link: '/会议记录/20260708项目进展沟通会' },
-            { text: '7月23日上机测试结果汇报与后续规划', link: '/会议记录/20260723上机测试结果汇报与后续规划讨论会' },
-            { text: '8月5日项目进展沟通会', link: '/会议记录/20260805项目进展沟通会' },
-            { text: '8月13日技术方案讨论会', link: '/会议记录/20260813技术方案讨论会' },
-          ]
-        },
+        { text: '功能文档', icon: 'book', items: navFuncDocs },
+        { text: '工艺模块', items: navProcess },
+        { text: '技术方案', icon: 'file-code', items: navTech },
+        { text: '会议记录', icon: 'calendar', items: navMeeting },
         {
           text: '技术文档',
           icon: 'file-code',
