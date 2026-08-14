@@ -125,7 +125,7 @@ export default withMermaid({
       }
       /* 导航栏样式优化 */
       .VPNav {
-        --vp-nav-height: 48px;
+        --vp-nav-height: 42px;
       }
       .VPNavBar {
         height: var(--vp-nav-height);
@@ -159,13 +159,25 @@ export default withMermaid({
         from { opacity: 0; transform: translateY(-6px); }
         to { opacity: 1; transform: translateY(0); }
       }
-      .VPNavBarMenuGroup .menu .item {
+      .VPNavBarMenuGroup .menu .VPMenu {
+        padding: 4px;
+      }
+      .VPNavBarMenuGroup .menu .VPMenu .items {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .VPNavBarMenuGroup .menu .VPMenuLink a {
+        display: block;
         color: var(--vp-c-text-1);
         border-radius: 8px;
-        padding: 6px 12px;
+        padding: 7px 12px;
+        font-size: 14px;
+        line-height: 1.5;
+        white-space: nowrap;
         transition: background-color 0.15s ease, color 0.15s ease;
       }
-      .VPNavBarMenuGroup .menu .item:hover {
+      .VPNavBarMenuGroup .menu .VPMenuLink a:hover {
         background-color: var(--vp-c-bg-alt);
         color: var(--vp-c-primary);
       }
