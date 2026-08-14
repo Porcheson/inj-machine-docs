@@ -1,0 +1,56 @@
+npm warn Unknown env config "msvs-version". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+
+> docs:build
+> vitepress build docs
+
+
+  [32m[1mvitepress[22m v2.0.0-alpha.18[39m
+
+- building client + server bundles...
+[33m
+The language 'iecst' is not loaded, falling back to 'txt' for syntax highlighting.[39m
+[33m
+The language 'iecst' is not loaded, falling back to 'txt' for syntax highlighting.[39m
+[33m
+The language 'iecst' is not loaded, falling back to 'txt' for syntax highlighting.[39m
+[33m
+The language 'iecst' is not loaded, falling back to 'txt' for syntax highlighting.[39m
+[33m
+The language 'st' is not loaded, falling back to 'txt' for syntax highlighting.[39m
+[33m
+The language 'st' is not loaded, falling back to 'txt' for syntax highlighting.[39m
+[33m
+The language 'iecst' is not loaded, falling back to 'txt' for syntax highlighting.[39m
+[33m
+The language 'iecst' is not loaded, falling back to 'txt' for syntax highlighting.[39m
+[33m
+The language 'iecst' is not loaded, falling back to 'txt' for syntax highlighting.[39m
+[33m
+The language 'iecst' is not loaded, falling back to 'txt' for syntax highlighting.[39m
+[33m
+The language 'st' is not loaded, falling back to 'txt' for syntax highlighting.[39m
+[33m
+The language 'st' is not loaded, falling back to 'txt' for syntax highlighting.[39m
+[33m[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.[39m
+[33m
+The language 'iecst' is not loaded, falling back to 'txt' for syntax highlighting.[39m
+[33m
+The language 'iecst' is not loaded, falling back to 'txt' for syntax highlighting.[39m
+[33m
+The language 'iecst' is not loaded, falling back to 'txt' for syntax highlighting.[39m
+[33m
+The language 'iecst' is not loaded, falling back to 'txt' for syntax highlighting.[39m
+[33m
+The language 'st' is not loaded, falling back to 'txt' for syntax highlighting.[39m
+[33m
+The language 'st' is not loaded, falling back to 'txt' for syntax highlighting.[39m
+[32m✓[0m building client + server bundles...
+- rendering pages...
+[32m✓[0m rendering pages...
+- generating sitemap...
+[32m✓[0m generating sitemap...
+build complete in 15.83s.
