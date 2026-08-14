@@ -1,10 +1,14 @@
 import { defineConfig } from 'vitepress'
 import { withMermaid } from 'vitepress-plugin-mermaid'
 import path from 'node:path'
+import fs from 'node:fs'
 import fg from 'fast-glob'
 
 // ===== 自动导航 / 侧栏生成：文档放入 docs 对应目录后重新构建即自动出现 =====
-const DOCS_DIR = path.resolve(__dirname, '../..')
+// 优先以 process.cwd() 定位 docs 目录（vitepress build docs 在项目根执行时可靠）
+const DOCS_DIR = fs.existsSync(path.join(process.cwd(), 'docs'))
+  ? path.join(process.cwd(), 'docs')
+  : process.cwd()
 const scanMd = (pattern: string) =>
   fg.sync(pattern, { cwd: DOCS_DIR, onlyFiles: true }).sort()
 
