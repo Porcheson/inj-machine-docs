@@ -134,16 +134,13 @@
 | `uiAxisJerk` | `UINT` | 功能块转存 | 加加速度 |
 
 ## 3. 功能块接口
-<div style="display:flex; flex-wrap:wrap; align-items:flex-start; justify-content:center; gap:24px; margin:28px auto;">
-  <figure style="flex:1 1 420px; max-width:48%; margin:0; text-align:center;">
-    <img src="image/FB_ClampBase_功能块LD.png" alt="FB_ClampBase LD 功能块接口图" style="width:100%; height:auto; border:1px solid #cfd8e3; background:#fff;" />
-    <figcaption>LD 功能块接口图</figcaption>
-  </figure>
-  <figure style="flex:1 1 420px; max-width:48%; margin:0; text-align:center;">
-    <img src="image/FB_ClampBase_功能块ST.png" alt="FB_ClampBase ST 调用图" style="width:100%; height:auto; border:1px solid #cfd8e3; background:#fff;" />
-    <figcaption>ST 调用图</figcaption>
-  </figure>
-</div>
+![FB_ClampBase LD 功能块接口图](image/FB_ClampBase_功能块LD.png)
+
+*LD 功能块接口图*
+
+![FB_ClampBase ST 调用图](image/FB_ClampBase_功能块ST.png)
+
+*ST 调用图*
 
 ### 3.1 `VAR_IN_OUT`
 
