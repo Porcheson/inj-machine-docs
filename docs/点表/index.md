@@ -62,4 +62,3 @@ AIGC:
 ## 动作相位映射
 
 <CsvTable src="/点表/machine-phase.xml" title="动作相位映射" />
-*（内容由AI生成，仅供参考）*

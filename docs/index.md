@@ -14,4 +14,3 @@ AIGC:
 <Particles />
 
 <HomeContent />
-*（内容由AI生成，仅供参考）*

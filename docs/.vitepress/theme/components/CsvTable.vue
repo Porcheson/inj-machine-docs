@@ -15,7 +15,8 @@ onMounted(async () => {
     const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '')
     const res = await fetch(base + props.src)
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
-    const text = await res.text()
+    const buf = await res.arrayBuffer()
+    const text = decodeText(buf)
     rows.value = parseCsv(text)
   } catch (e: any) {
     error.value = e?.message || String(e)
@@ -23,6 +24,24 @@ onMounted(async () => {
     loading.value = false
   }
 })
+
+function decodeText(buf: ArrayBuffer): string {
+  const bytes = new Uint8Array(buf)
+  // UTF-8 BOM
+  if (bytes.length >= 3 && bytes[0] === 0xef && bytes[1] === 0xbb && bytes[2] === 0xbf) {
+    return new TextDecoder('utf-8').decode(bytes.subarray(3))
+  }
+  // 优先严格 UTF-8，失败则回退 GBK（兼容中文 Excel 导出的 GBK CSV）
+  try {
+    return new TextDecoder('utf-8', { fatal: true }).decode(bytes)
+  } catch {
+    try {
+      return new TextDecoder('gbk').decode(bytes)
+    } catch {
+      return new TextDecoder('utf-8').decode(bytes)
+    }
+  }
+}
 
 function parseCsv(text: string): string[][] {
   const lines = text.trim().split(/\r?\n/)
