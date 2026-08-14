@@ -1,6 +1,15 @@
 ---
-title: 点表
+AIGC:
+    Label: "1"
+    ContentProducer: 001191440300708461136T1XGW3
+    ProduceID: 883d1090daf20d064bdc006d517dddd3_5704b3a297a111f1a98a525400f8a581
+    ReservedCode1: yUdpVB+4FpIZFt/oKWbMUDQw5KLMs9quxeWT8LoU4m2XGwA5W1BXxitnYjFqezieFslCckZVKrbOvMoBT1pTMHWDQgn10YJMC4xFU7u+OJv74eEn40aI9yatkqWq/fJC01iCj0QeUcEjm5U4hXgGSglumEO5DJ0psj+3fUGTepOlsCXof6KgCl9atqU=
+    ContentPropagator: 001191440300708461136T1XGW3
+    PropagateID: 883d1090daf20d064bdc006d517dddd3_5704b3a297a111f1a98a525400f8a581
+    ReservedCode2: yUdpVB+4FpIZFt/oKWbMUDQw5KLMs9quxeWT8LoU4m2XGwA5W1BXxitnYjFqezieFslCckZVKrbOvMoBT1pTMHWDQgn10YJMC4xFU7u+OJv74eEn40aI9yatkqWq/fJC01iCj0QeUcEjm5U4hXgGSglumEO5DJ0psj+3fUGTepOlsCXof6KgCl9atqU=
 ---
+
+
 
 # 点表
 
@@ -53,3 +62,4 @@ title: 点表
 ## 动作相位映射
 
 <CsvTable src="/点表/machine-phase.xml" title="动作相位映射" />
+*（内容由AI生成，仅供参考）*

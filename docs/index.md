@@ -1,27 +1,17 @@
 ---
-layout: home
-
-title: 宝捷信立式注塑机
-hero:
-  name: "PORCHESON"
-  text: "立式注塑机功能整理"
-  tagline: 专业 · 高效 · 可靠 — 注塑机控制解决方案
-  image:
-    src: /logo.png
-    alt: 宝捷信立式注塑机Logo
-    width: 200
-    height: 200
-  actions:
-    - theme: brand
-      text: 功能文档
-      link: /01_开合模功能整理
-      icon: book
-    - theme: alt
-      text: 点表
-      link: /点表/
-      icon: table
+AIGC:
+    Label: "1"
+    ContentProducer: 001191440300708461136T1XGW3
+    ProduceID: 883d1090daf20d064bdc006d517dddd3_5a8d218f97a111f19467525400287e28
+    ReservedCode1: /LheZJLTCgPloS9J/5K8CJbmJYGXabAfKK3ksULK1HS4sA9r1lkD0/IQmiXbRAig0Y9wtUFlYQ5cj51WlAzFflwmD8pzgKavx1N25AZGIQ8Y0W1SiH64Scw6Jmu7mj0ryprYXz24mnXc7QE6HoBsZckq/rSZ0WVnRf14mughjWOk1+N8cXfedrpWghQ=
+    ContentPropagator: 001191440300708461136T1XGW3
+    PropagateID: 883d1090daf20d064bdc006d517dddd3_5a8d218f97a111f19467525400287e28
+    ReservedCode2: /LheZJLTCgPloS9J/5K8CJbmJYGXabAfKK3ksULK1HS4sA9r1lkD0/IQmiXbRAig0Y9wtUFlYQ5cj51WlAzFflwmD8pzgKavx1N25AZGIQ8Y0W1SiH64Scw6Jmu7mj0ryprYXz24mnXc7QE6HoBsZckq/rSZ0WVnRf14mughjWOk1+N8cXfedrpWghQ=
 ---
+
+
 
 <Particles />
 
 <HomeContent />
+*（内容由AI生成，仅供参考）*

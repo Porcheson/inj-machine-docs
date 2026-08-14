@@ -117,16 +117,67 @@ export default withMermaid({
         padding: 0 12px;
       }
       .VPNavBarMenuGroup .menu {
-        top: var(--vp-nav-height);
+        top: calc(var(--vp-nav-height) + 6px);
         background-color: var(--vp-c-bg);
         border: 1px solid var(--vp-c-divider);
+        border-radius: 12px;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+        padding: 6px;
+        animation: vp-nav-menu-in 0.18s ease-out;
+      }
+      @keyframes vp-nav-menu-in {
+        from { opacity: 0; transform: translateY(-6px); }
+        to { opacity: 1; transform: translateY(0); }
       }
       .VPNavBarMenuGroup .menu .item {
         color: var(--vp-c-text-1);
+        border-radius: 8px;
+        padding: 6px 12px;
+        transition: background-color 0.15s ease, color 0.15s ease;
       }
       .VPNavBarMenuGroup .menu .item:hover {
         background-color: var(--vp-c-bg-alt);
         color: var(--vp-c-primary);
+      }
+      .VPNavBarMenuLink,
+      .VPNavBarMenuGroup .button {
+        transition: color 0.15s ease, opacity 0.15s ease;
+      }
+      .VPNavBarMenuLink:hover,
+      .VPNavBarMenuGroup .button:hover {
+        opacity: 1;
+        color: var(--vp-c-primary);
+      }
+      /* 导航项 hover 下划线动效 */
+      .VPNavBarMenuLink,
+      .VPNavBarMenuGroup .button {
+        position: relative;
+      }
+      .VPNavBarMenuLink::after,
+      .VPNavBarMenuGroup .button::after {
+        content: "";
+        position: absolute;
+        left: 12px;
+        right: 12px;
+        bottom: 0;
+        height: 2px;
+        border-radius: 2px;
+        background: var(--vp-c-primary);
+        transform: scaleX(0);
+        transform-origin: center;
+        transition: transform 0.2s ease;
+      }
+      .VPNavBarMenuLink:hover::after,
+      .VPNavBarMenuGroup .button:hover::after,
+      .VPNavBarMenuLink.active::after {
+        transform: scaleX(1);
+      }
+      /* 下拉箭头展开旋转 */
+      .VPNavBarMenuGroup .button .text-icon {
+        transition: transform 0.2s ease;
+      }
+      .VPNavBarMenuGroup:hover .button .text-icon {
+        transform: rotate(180deg);
       }
       .VPNavBarAppearance {
         height: var(--vp-nav-height);
@@ -202,10 +253,34 @@ export default withMermaid({
           { text: '自动流程', link: '/14_自动流程功能整理' }
         ]
       },
+      {
+        text: '工艺模块',
+        items: [
+          { text: 'FB_ClampBase 功能块使用说明', link: '/工艺模块/FB_ClampBase_功能块使用说明' },
+          { text: 'FB_EK312Base 功能块使用说明', link: '/工艺模块/FB_EK312Base_功能块使用说明' },
+          { text: 'HydMotionLight IEC 接口使用文档 V1.1', link: '/工艺模块/HydMotion_IEC_接口使用文档 V1.1' },
+          { text: 'HydTechnology 技术库使用说明书', link: '/工艺模块/HydTechnology_技术库使用说明书' }
+        ]
+      },
+      {
+        text: '技术方案',
+        items: [
+          { text: 'PLC技术文档评审与改进建议', link: '/技术方案/PLC技术文档评审与改进建议' },
+          { text: '注塑机液压控制分层方案对比分析', link: '/技术方案/注塑机液压控制分层方案对比分析' },
+          { text: '注塑机专用工艺库架构设计', link: '/技术方案/注塑机专用工艺库架构设计' }
+        ]
+      },
+      {
+        text: '会议记录',
+        items: [
+          { text: '7月8日项目进展沟通会', link: '/会议记录/20260708项目进展沟通会' },
+          { text: '7月23日上机测试结果汇报与后续规划', link: '/会议记录/20260723上机测试结果汇报与后续规划讨论会' },
+          { text: '8月5日项目进展沟通会', link: '/会议记录/20260805项目进展沟通会' },
+          { text: '8月13日技术方案讨论会', link: '/会议记录/20260813技术方案讨论会' }
+        ]
+      },
       { text: '点表', link: '/点表/' }
-    ],
-
-    sidebar: {
+    ],    sidebar: {
       '/': [
         { text: '首页', link: '/', icon: 'home' },
         {
@@ -233,6 +308,8 @@ export default withMermaid({
           items: [
             { text: 'FB_ClampBase 功能块使用说明', link: '/工艺模块/FB_ClampBase_功能块使用说明' },
             { text: 'FB_EK312Base 功能块使用说明', link: '/工艺模块/FB_EK312Base_功能块使用说明' },
+            { text: 'HydMotionLight IEC 接口使用文档 V1.1', link: '/工艺模块/HydMotion_IEC_接口使用文档 V1.1' },
+            { text: 'HydTechnology 技术库使用说明书', link: '/工艺模块/HydTechnology_技术库使用说明书' },
           ]
         },
         {
