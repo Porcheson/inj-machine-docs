@@ -3,8 +3,8 @@
 | 项目 | 内容 |
 |---|---|
 | 模块名称 | `FB_ClampBase` |
-| 适用场景 | 注塑机锁模机构的开模、合模、低压保护和高压锁模控制 |
-| 版本信息 | 文档版本 1.0；库版本 1.0.0；更新日期 2026-08-18 |
+| 适用场景 | 注塑机锁模机构的开模、合模、低压保护和高压锁模控制 |  
+| 版本信息 | 文档版本 1.0；库版本 1.0.0；更新日期 2026-08-19 |
 | 事实原则 | 以下描述以当前 ST 执行逻辑为准；注释与实际逻辑不一致时标注“需协议确认” |
 
 ## 1. 功能概述
@@ -75,7 +75,7 @@
 
 | 成员 | 类型 | 读写属性 | 用途 |
 |---|---|---|---|
-| `uiOpenSegCnt` | `UINT` | 只读 | 开模最后有效下标，收口到 `0..4` |
+| `uiOpenSegCnt` | `UINT` | 只读 | 开模段数；收口到 `0..4` |
 | `uiOpenMode` | `UINT` | 只读 | 开模方式：`0` 行程，`1` 位置 |
 | `uiOpenLimitTime` | `UINT` | 只读 | 开模分段总时限 |
 | `stOpenUnloadPres` | `ST_ClampSeg` | 只读 | 开模卸荷参数 |
@@ -85,11 +85,11 @@
 | `uiOpenDebugPresStopGrad` | `UINT` | 只读 | 开模调模压力停止斜率 |
 | `uiOpenDebugSpdStartGrad` | `UINT` | 只读 | 开模调模速度启动斜率 |
 | `uiOpenDebugSpdStopGrad` | `UINT` | 只读 | 开模调模速度停止斜率 |
-| `uiOpenPresStartGrad` | `UINT` | 只读 | 开模首段压力启动斜率 |
+| `uiOpenPresStartGrad` | `UINT` | 只读 | 开模压力启动斜率 |
 | `uiOpenPresStopGrad` | `UINT` | 只读 | 开模压力停止斜率 |
-| `uiOpenSpdStartGrad` | `UINT` | 只读 | 开模首段速度启动斜率 |
+| `uiOpenSpdStartGrad` | `UINT` | 只读 | 开模速度启动斜率 |
 | `uiOpenSpdStopGrad` | `UINT` | 只读 | 开模速度停止斜率 |
-| `uiCloseSegCnt` | `UINT` | 只读 | 合模最后有效下标，收口到 `0..3` |
+| `uiCloseSegCnt` | `UINT` | 只读 | 合模段数；收口到 `0..3` |
 | `uiCloseMode` | `UINT` | 只读 | 合模方式：`0` 行程，`1` 位置  |
 | `uiCloseLimitTime` | `UINT` | 只读 | 合模分段总时限 |
 | `uiCloseLowPresLimitTime` | `UINT` | 只读 | 合模低压保护时限 |
@@ -103,20 +103,20 @@
 | `uiCloseDebugPresStopGrad` | `UINT` | 只读 | 合模调模压力停止斜率 |
 | `uiCloseDebugSpdStartGrad` | `UINT` | 只读 | 合模调模速度启动斜率 |
 | `uiCloseDebugSpdStopGrad` | `UINT` | 只读 | 合模调模速度停止斜率 |
-| `uiClosePresStartGrad` | `UINT` | 只读 | 合模首段压力启动斜率 |
+| `uiClosePresStartGrad` | `UINT` | 只读 | 合模压力启动斜率 |
 | `uiClosePresStopGrad` | `UINT` | 只读 | 合模压力停止斜率 |
-| `uiCloseSpdStartGrad` | `UINT` | 只读 | 合模首段速度启动斜率 |
+| `uiCloseSpdStartGrad` | `UINT` | 只读 | 合模速度启动斜率 |
 | `uiCloseSpdStopGrad` | `UINT` | 只读 | 合模速度停止斜率 |
 
 ### 2.4 `ST_ParaRef`
 
 | 成员 | 类型 | 读写属性 | 用途 |
 |---|---|---|---|
-| `udiPosToleranceValue` | `UDINT` | `VAR_IN_OUT`，读写 | 电子尺位置比较容差 |
+| `udiPosToleranceValue` | `UDINT` | 读写 | 位置容差值 |
 
 ### 2.5 `ST_HydAxisRef`
 
-该类型由液压轴库定义。`FB_ClampBase` 将其传入内部 `FB_HydAxis`，调用后再回写；结构成员请查阅 `HydTechnology` 技术库使用说明书。
+该类型由液压轴库定义。`FB_ClampBase` 将其传入内部 `FB_HydAxis`，调用后再回写；结构成员请查阅 HydTechnology 技术库使用说明书。
 
 ### 2.6 `ST_HydAxisCtrl`
 
@@ -124,13 +124,13 @@
 |---|---|---|---|
 | `bAxisStart` | `BOOL` | 只写 | 轴启动信号 |
 | `uiAxisDir` | `UINT` | 只写 | 轴方向值；开模写 `1`、合模写 `2` |
-| `uiAxisMode` | `UINT` | 只写 | 轴命令模式  `0` 无效、`1` 位置、`2` 速度、`3` 压力 |
+| `uiAxisMode` | `UINT` | 只写 | 轴命令模式：`1` 位置、`2` 速度、`3` 压力 |
 | `uiPresCmd` | `UINT` | 只写 | 压力命令 |
 | `uiSpdCmd` | `UINT` | 只写 | 速度命令 |
 | `uiEndSpdCmd` | `UINT` | 只写 | 段结束速度 |
 | `udiPosCmd` | `UDINT` | 只写 | 位置命令 |
-| `uiAxisPresAcc` | `UINT` | 只写 | 压力加速度参数；当前仅转存 |
-| `uiAxisPresDec` | `UINT` | 只写 | 压力减速度参数；当前仅转存 |
+| `uiAxisPresAcc` | `UINT` | 只写 | 压力加速度参数 |
+| `uiAxisPresDec` | `UINT` | 只写 | 压力减速度参数 |
 | `uiAxisSpdAcc` | `UINT` | 只写 | 速度加速度参数 |
 | `uiAxisSpdDec` | `UINT` | 只写 | 速度减速度参数 |
 | `uiAxisJerk` | `UINT` | 只写 | 加加速度参数 |
@@ -150,8 +150,8 @@
 
 | 名称 | 类型 | 当前行为 | 信号含义 |
 |---|---|---|---|
-| `stHydAxisRef` | `ST_HydAxisRef` | 传入内部 `FB_HydAxis`，调用后回写 | 液压轴参考状态 |
-| `stParaRef` | `ST_ParaRef` | 电子尺模式下读取 | 位置参考参数 |
+| `stHydAxisRef` | `ST_HydAxisRef` | 传入内部 `FB_HydAxis`，调用后回写 | 液压轴参数引用参考 |
+| `stParaRef` | `ST_ParaRef` | 引用位置容差值 | 工艺参数引用参考 |
 
 ### 3.2 `VAR_INPUT`
 
@@ -159,7 +159,7 @@
 |---|---|---|---|
 | `bStart` | `BOOL` | 在 `Idle` 状态检测上升沿后启动初始化 | 启动命令 |
 | `bStop` | `BOOL` | 优先级低于复位和急停；回到空闲并清主要轴命令 | 正常停止 |
-| `bEStop` | `BOOL` | 进入错误状态并置 `16#0010` | 急停请求 |
+| `bEStop` | `BOOL` | 进入错误状态并置 `16#0001` | 急停请求 |
 | `bReset` | `BOOL` | 最高优先级；清状态、报警和主要轴命令 | 复位命令 |
 | `uiClampMode` | `UINT` | `1/2` 选择开模/合模，`3/4` 选择调模开模/合模；其他值报警 | 动作模式 |
 | `stClampPara` | `ST_ClampPara` | 动作过程中按周期读取 | 锁模工艺参数 |
@@ -167,8 +167,8 @@
 | `bCloseLowPres` | `BOOL` | `uiCloseMode=0` 时参与低压到位判断 | 低压到位反馈 |
 | `bCloseHighPres` | `BOOL` | `uiCloseEndMode=1` 时参与高压结束判断 | 高压到位反馈 |
 | `bCloseStop` | `BOOL` | `uiCloseMode=0` 时参与合模分段结束判断 | 合模停止反馈 |
-| `udiClampElecRulerVal` | `UDINT` | 电子尺模式下参与位置比较 | 锁模位置反馈 |
-| `uiClampPresElecRulerVal` | `UINT` | `uiCloseEndMode=2` 时参与高压结束判断 | 锁模压力反馈 |
+| `udiClampElecRulerVal` | `UDINT` | 开模、合模和低压电子尺模式下参与位置比较 | 锁模位置反馈 |
+| `uiClampPresElecRulerVal` | `UINT` | `uiCloseEndMode=2` 时参与高压压力比较 | 锁模压力反馈 |
 
 ### 3.3 `VAR_OUTPUT`
 
@@ -193,11 +193,11 @@
 | 报警代码 | 报警信息 |
 |---|---|
 | `16#0000` | 无报警 |
-| `16#0008` | `uiClampMode` 参数无效 |
-| `16#0010` | 紧急停止 |
-| `16#1000` | 低压保护时间到 |
-| `16#1001` | 开模限时报警 |
-| `16#1002` | 合模限时报警 |
+| `16#0001` | 紧急停止 |
+| `16#0002` | `uiClampMode` 参数无效 |
+| `16#0004` | 开模限时报警 |
+| `16#0008` | 合模限时报警 |
+| `16#0010` | 低压保护时间到 |
 
 ### 4.2 动作状态码
 
@@ -213,15 +213,13 @@
 | `30` | 合模低压 |
 | `31` | 合模高压 |
 
-`uiActHint` 仅表示当前动作阶段或完成结果，不等同于 `dwAlarmID`；`bMoldOpened` 和 `bMoldClosed` 分别表示开模、合模完成。轴报警仍通过 `stHydAxisCtrl.bAlarm` 和 `stHydAxisCtrl.dwAlarmID` 分层读取。
-
 ## 5. 调用规范和注意事项
 
-1. 在固定周期内每周期调用一次。每次调用将活动阶段计时增加 `1`；开模卸荷和合模高压的参数时间使用 `×100`，开模/合模总限时及低压保护时间使用 `×1000`，均是调用次数阈值而非直接的 `TIME` 比较，实际时间由调用周期决定。
+1. 在固定周期内每周期调用一次。每次活动阶段调用将阶段计时和总计时增加 `1`；开模卸荷、合模高压、开模/合模总限时及低压保护时间均按对应参数乘 `100` 次调用比较，而不是直接的 `TIME` 比较，实际时间由调用周期决定。
 2. 调用前准备 `stHydAxisRef`、电子尺、压力和数字反馈，再生成 `bStart`、`uiClampMode` 及工艺参数并调用 `FB_ClampBase`；调用后读取 `stHydAxisCtrl` 和回写后的 `stHydAxisRef`。轴功能块已在当前 POU 内部调用，调用者不得重复调用外部轴功能块。
-3. `uiOpenSegCnt` 的有效范围为 `0..4`、`uiCloseSegCnt` 的有效范围为 `0..3`，二者均是最后有效下标；`uiOpenMode`、`uiCloseMode` 限定为 `0` 或 `1`，`uiCloseEndMode` 限定为 `0`、`1` 或 `2`。大于数组上界的段数会收口，`UINT` 下不存在小于 `0` 的有效输入，其他模式值没有独立报警；压力、速度、位置、时间和斜率的单位/缩放须按轴接口和受控协议确认。
+3. `uiOpenSegCnt` 是开模段数，`1..5` 在初始化时转换为内部最后下标 `0..4`；`uiCloseSegCnt` 是合模段数，`1..4` 转换为内部最后下标 `0..3`，大于各自最大段数时收口。输入为 `0` 时内部下标仍为 `0`，当前逻辑可能继续执行第 0 段，不能把 `0` 当作无段配置。`uiOpenMode`、`uiCloseMode` 限定为 `0` 或 `1`，`uiCloseEndMode` 限定为 `0`、`1` 或 `2`；其他模式值没有独立报警，可能导致相应阶段没有结束条件。`UINT` 下不存在小于 `0` 的有效输入；压力、速度、位置、时间和斜率的单位/缩放须按轴接口和受控协议确认。
 4. `bStart` 仅在 `Idle` 状态检测上升沿后启动；开模或合模完成后完成状态保持在完成分支，下一次动作前应通过停止或复位回到 `Idle`。`bStop` 清主要轴命令并传给内部 `FB_HydAxis`，但不清功能块报警；`bReset` 清功能块状态和报警并传给内部轴，复位优先级高于急停。需要停止脉冲时，可将 `bStart` 下降沿与 `bStop` 做 OR。
-5. `bBusy` 是工艺功能块忙状态，`stHydAxisCtrl.bAxisStart` 是当前阶段的轴启动窗口，`stHydAxisCtrl.bBusy` 是内部液压轴忙状态；停止、完成、急停、错误和空闲分支将 `stHydAxisCtrl.uiAxisMode` 置为 `0` 并清主要轴命令，斜率等转存字段不应被视为有效执行命令。`ST_ClampSeg.uiTime` 在开模/合模分段数组中当前未读取。
+5. `bBusy` 是工艺功能块忙状态，`stHydAxisCtrl.bAxisStart` 是每个活动阶段前 `20` 次调用的轴启动窗口，`stHydAxisCtrl.bBusy` 是内部液压轴忙状态；窗口结束后 `bAxisStart` 可能为 `FALSE`，不能把它当作持续运行确认。停止、完成、急停、错误和空闲分支将 `stHydAxisCtrl.uiAxisMode` 置为 `0` 并清主要轴命令，斜率等转存字段不应被视为有效执行命令。`ST_ClampSeg.uiTime` 在 `aOpenSeg`/`aCloseSeg` 分段数组中当前未读取，但 `stOpenUnloadPres.uiTime` 和 `stCloseHighPres.uiTime` 分别用于卸荷和高压结束。
 6. 当前 ST 的轴调用条件固定为 `IF TRUE`，每周期执行 `FB_HydAxis`，`FB_EleAxis` 分支当前不会执行。内部调用仅映射速度加速度、速度减速度和加加速度；压力加减速字段只转存到 `stHydAxisCtrl`，`uiAxisJerk` 当前没有可靠赋值来源。`uiAxisDir` 编码、轴字段单位和 `ST_HydAxisRef` 结构须按受控轴协议确认；轴报警只写入 `stHydAxisCtrl`，不自动并入功能块自身报警，本功能块也不替代独立急停、安全继电器、机械限位、轴故障处理或物理能量切断。
 
 ## 6. 外部交互边界
