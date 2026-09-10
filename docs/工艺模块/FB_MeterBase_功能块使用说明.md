@@ -4,8 +4,9 @@
 |---|---|
 | 模块名称 | `FB_MeterBase` |
 | 适用场景 | 注塑机储料过程的多段压力、背压、速度和位置控制 |
-| 版本信息 | 文档版本 1.0；库版本 1.0.0；更新日期 2026-08-20 |
-| 事实原则 | 以下描述以当前 ST 执行逻辑为准；注释与实际逻辑不一致时标注“需协议确认” |
+| 版本信息 | 文档版本 1.1；库版本  `PlasticLibs` 1.0.26.908；更新日期 2026-09-10 |
+| 依赖库信息 | `HydTechnology` 0.1.1.0，提供 `FB_HydAxis`、`ST_HydAxisRef` 等液压轴相关类型和功能块|
+| 事实原则 | 以下描述以当前 ST 执行逻辑为准；注释与实际逻辑不一致时标注“需协议确认” | 
 
 ## 1. 功能概述
 
@@ -13,10 +14,10 @@
 
 `FB_MeterBase` 组织储料动作的启动、分段执行、完成和错误流程，将储料工艺参数、调模参数以及电子尺/停止反馈转换为轴控制命令，并输出储料状态、动作提示、动作时间和报警结果。功能块支持：
 
-- 最多 8 个储料段；`uiMeterSegCnt` 按段数选择，初始化时换算为内部最后下标 `0..7`；输入 `0` 仍执行第 1 段；
+- 最多 8 个储料段；`uiMeterSegCnt` 按段数选择，初始化时换算为内部最后下标 `0..7`；
 - `uiMeterMode=1` 普通储料和 `uiMeterMode=2` 储料调模；
 - `stMeterPara.uiMeterMode=1` 的电子尺位置结束，或 `stMeterPara.uiMeterMode=0` 的数字停止结束；
-- 普通模式的压力、背压、速度、位置和分段斜率命令，以及调模模式的单组参数；
+- 普通模式的压力、速度、位置和分段斜率命令，以及调模模式的单组参数；
 - 储料完成状态、当前段动作提示、阶段累计调用值、功能块报警和报警代码。
 
 ### 输入与输出
@@ -101,7 +102,7 @@
 |---|---|---|---|
 | `bAxisStart` | `BOOL` | 只写 | 轴启动/执行信号 |
 | `uiAxisDir` | `UINT` | 只写 | 轴方向；储料写 `1` |
-| `uiAxisMode` | `UINT` | 只写 | 轴控制模式：`1` 位置、`2` 速度、`3` 压力；储料固定写 `2` |
+| `uiAxisMode` | `UINT` | 只写 | 轴控制模式：`1` 位置、`2` 速度、`3` 压力 |
 | `uiPresCmd` | `UINT` | 只写 | 压力命令 |
 | `uiSpdCmd` | `UINT` | 只写 | 速度命令 |
 | `uiEndSpdCmd` | `UINT` | 只写 | 段结束速度 |
@@ -148,12 +149,12 @@
 | 名称 | 类型 | 当前行为 | 信号含义 |
 |---|---|---|---|
 | `bBusy` | `BOOL` | 启动后置位；停止、完成、急停或错误时清除 | 忙状态 |
-| `bDone` | `BOOL` | `Metered` 状态置位；`Idle` 或复位分支清除 | 完成状态 |
-| `bAlarm` | `BOOL` | 无效模式或急停立即置位；限时在进入错误状态后置位；复位清除 | 报警状态 |
+| `bDone` | `BOOL` | `Metered` 状态先执行 `ClearStatus()` 后置位；停止、错误和复位清除 | 完成状态 |
+| `bAlarm` | `BOOL` | 急停、无效模式或错误状态置位；仅复位清除 | 报警状态 |
 | `dwAlarmID` | `DWORD` | 报警代码按位 OR 累积；复位清零，停止和完成不自动清除 | 报警代码 |
 | `uiActHint` | `UINT` | 输出空闲、报警、完成或储料段提示 | 动作提示 |
 | `uiActTime` | `UINT` | 输出当前储料段累计调用值（按 `/1` 转换） | 动作时间 |
-| `bMetered` | `BOOL` | 进入 `Metered` 状态后置位；`Idle` 或复位清除 | 储料完成状态 |
+| `bMetered` | `BOOL` | `Metered` 状态置位；停止、错误和复位清除 | 储料完成状态 |
 | `stHydAxisCtrl` | `ST_HydAxisCtrl` | 调用末尾转存当前轴命令和内部 `FB_HydAxis` 状态 | 轴命令和轴状态包 |
 
 `stHydAxisCtrl` 中的轴状态字段来自内部 `FB_HydAxis`，与本功能块自身的 `bBusy`、`bDone`、`bAlarm` 和 `dwAlarmID` 分属不同层级。调用者应分别读取工艺层和轴层结果。
@@ -182,12 +183,12 @@
 
 ## 5. 调用规范和注意事项
 
-1. **固定周期调用和计时。** 在稳定、已知周期内每周期调用一次，并在调用前刷新命令、模式、参数和现场反馈。当前逻辑每次 `Metering` 调用将阶段计时和总计时各增加 `1`，总限时比较值为 `uiMeterLimitTime×100`；`uiActTime` 由阶段累计值按 `/1` 转换得到，实际时间取决于调用周期。
-2. **调用顺序和轴层边界。** 先准备 `stParaRef`、`stMeterPara`、`bMeterStop` 和 `udiMeterElecRulerVal`，再调用 `FB_MeterBase`，最后读取输出和 `stHydAxisCtrl`。当前 POU 已在固定分支内调用 `FB_HydAxis` 并回写 `stHydAxisRef`，调用者不得为了同一动作再次重复调用外部轴功能块；轴层诊断应读取 `stHydAxisCtrl` 的状态字段。
-3. **模式与结束方式。** 顶层 `uiMeterMode` 只允许 `1` 普通储料或 `2` 储料调模，其他值（含 `0`）在 `Init` 写入 `16#0002`；参数内 `stMeterPara.uiMeterMode` 只允许 `0` 数字停止或 `1` 电子尺，两者含义不同。模式应在启动前确定并保持；参数内模式为其他值时当前逻辑没有独立报警，可能只能等待总限时。
-4. **分段和反馈配置。** `uiMeterSegCnt` 是段数选择：`1..8` 在初始化时换算为内部最后下标 `0..7`，大于 `8` 收口到 `7`，输入 `0` 仍执行第 1 段。当前段按电子尺条件 `udiMeterElecRulerVal + stParaRef.udiPosToleranceValue >= aMeterSeg[index].udiPos` 或数字停止条件 `bMeterStop` 结束；调模命令替换不改变该结束条件。电子尺容差、位置单调性和停止信号合理性不由本功能块检查。
-5. **启动、停止、复位和输出保持。** `bStart` 在 `Idle` 中使用上升沿启动，下降沿与 `bStop` 一样触发正常停止；`bStop` 清主要轴命令和计时但不清报警码，`bReset` 优先级高于急停并清除状态和报警。活动段期间 `bAxisStart` 持续为 `TRUE`，`uiAxisMode=2` 表示当前速度模式命令；`bBusy` 是工艺状态，不等同于轴忙状态。储料完成分支清除主要压力、背压、速度、结束速度和位置命令。
-6. **未实现字段、单位和安全边界。** 普通模式的 `uiMeterPresStopGrad`、`uiMeterSpdStopGrad` 当前未读取；调模模式使用对应调模停止斜率。`uiAxisPresAcc`/`uiAxisPresDec` 只转存到 `stHydAxisCtrl`，内部 `FB_HydAxis` 当前接收速度加减速和 `uiAxisJerk`，其中 `uiAxisJerk` 无可靠赋值来源；背压参数未写入 `ST_HydAxisCtrl` 且未传入 `FB_HydAxis`，其执行需协议确认。本功能块也不替代独立急停、安全门/光幕、机械限位、轴故障处理或物理能量切断。
+1. 在固定周期内每周期调用一次，并在调用前刷新命令、模式、参数和现场反馈。当前逻辑每次 `Metering` 调用将阶段计时和总计时各增加 `1`，总限时比较值为 `uiMeterLimitTime×100`；储料分段没有时间结束条件，只由位置或数字停止信号切换。`uiActTime` 由阶段累计值按 `/1` 转换得到，实际时间取决于调用周期；限时后的分段结束和完成判断在同一扫描仍可能改写状态，但报警位会保留。
+2. 调用顺序应为：先准备 `stHydAxisRef`、`stParaRef`、`stMeterPara`、`bMeterStop` 和 `udiMeterElecRulerVal`，再调用 `FB_MeterBase`，最后读取工艺输出、`stHydAxisCtrl` 和回写后的 `stHydAxisRef`。当前 POU 已在固定分支内调用 `FB_HydAxis`，调用者不得为了同一动作再次重复调用外部轴功能块；轴层诊断应读取 `stHydAxisCtrl` 的状态字段。
+3. 顶层 `uiMeterMode` 只允许 `1` 普通储料或 `2` 储料调模，其他值（含 `0`）在 `Init` 写入 `16#0002`；参数内 `stMeterPara.uiMeterMode` 仅实现 `0` 数字停止或 `1` 电子尺位置。参数内模式为其他值没有独立报警，分段不会结束，可能只能等待总限时。`uiMeterSegCnt` 是段数选择：`1..8` 换算为内部最后下标 `0..7`，大于 `8` 收口到 `7`，输入 `0` 仍访问第 `0` 段。
+4. 位置模式使用 `udiMeterElecRulerVal + stParaRef.udiPosToleranceValue >= aMeterSeg[uiStageIndex].udiPos`，数字停止模式使用 `bMeterStop`；调模模式只替换压力、背压、速度、位置和斜率命令，不改变分段结束条件。位置容差、`UDINT` 加法边界、位置单调性和停止信号合理性不由本功能块检查。第 `0` 段使用起始压力/速度斜率，其余段使用前段斜率作为加速、当前段斜率作为减速；普通停止斜率字段当前未被读取。
+5. `bStart` 在 `Idle` 中使用上升沿启动，下降沿与 `bStop` 一样触发正常停止；处理优先级为 `bReset` > `bEStop` > (`bStop` 或 `f_bStart.Q`) > 状态机。停止、错误和复位清主要轴命令、背压局部变量及完成输出，但不清报警代码；`Metered` 分支在 `ClearStatus()` 后置 `bDone` 与 `bMetered`，并保持状态直到停止或复位。活动段未满足结束条件时，无论阶段计时值如何，`bAxisStart` 均置为 `TRUE` 且 `uiAxisMode=2`；命中段结束条件的当次调用不会重新赋值，可能暂时保留上一周期轴命令。
+6. `uiAxisPresAcc`/`uiAxisPresDec` 只转存到 `stHydAxisCtrl`，内部 `FB_HydAxis` 接收速度加减速和 `uiAxisJerk`，其中 `uiAxisJerk` 在本 POU 内仅由清零逻辑提供。`uiBackPresCmd` 由 `uiBackPres` 赋值后没有映射到 `stHydAxisCtrl` 或传入 `FB_HydAxis`；局部计数 `b1` 仅在电子尺值大于 `0` 时递增，当前不参与控制或输出。功能块报警与轴报警应分层读取；本功能块不替代独立急停、安全门/光幕、机械限位、轴故障处理或物理能量切断。
 
 ## 6. 外部交互边界
 

@@ -4,7 +4,8 @@
 |---|---|
 | 模块名称 | `FB_EjectBase` |
 | 适用场景 | 注塑机托模进、托模保持和托模退的多段工艺控制 |
-| 版本信息 | 文档版本 1.0；库版本 1.0.0；更新日期 2026-08-20 |
+| 版本信息 | 文档版本 1.1；库版本  `PlasticLibs` 1.0.26.908；更新日期 2026-09-10 |
+| 依赖库信息 | `HydTechnology` 0.1.1.0，提供 `FB_HydAxis`、`ST_HydAxisRef` 等液压轴相关类型和功能块| 
 | 事实原则 | 以下描述以当前 ST 执行逻辑为准；注释与实际逻辑不一致时标注“需协议确认” |
 
 ## 1. 功能概述
@@ -40,7 +41,7 @@
        -> 普通模式保持时间有效：EjectKeeping -> EjectKept
        -> 调模模式或保持时间为 0：直接进入 EjectKept
   -> 托模退请求：EjectOuting[0..2] -> EjectOuted
-  -> 模式无效或托模进/退总限时到 -> Error
+  -> 模式无效 -> Error；托模进/退总限时到先置报警并请求 Error
   -> 内部调用 FB_HydAxis，回写 stHydAxisRef 并转存轴命令和轴状态到 stHydAxisCtrl
 ~~~
 
@@ -123,7 +124,7 @@
 | 成员 | 类型 | 读写属性 | 用途 |
 |---|---|---|---|
 | `bAxisStart` | `BOOL` | 只写 | 轴启动窗口 |
-| `uiAxisDir` | `UINT` | 只写 | 轴方向值；托模进写 `2`、托模退写 `1` |
+| `uiAxisDir` | `UINT` | 只写 | 轴方向值；托模进写 `1`、托模退写 `2` |
 | `uiAxisMode` | `UINT` | 只写 | 轴控制模式：`1` 位置、`2` 速度、`3` 压力 |
 | `uiPresCmd` | `UINT` | 只写 | 压力命令 |
 | `uiSpdCmd` | `UINT` | 只写 | 速度命令 |
@@ -173,14 +174,14 @@
 
 | 名称 | 类型 | 当前行为 | 信号含义 |
 |---|---|---|---|
-| `bBusy` | `BOOL` | 启动后置位；托模进完成后及停止、保持完成、托模退完成、急停或错误时清除 | 工艺忙状态 |
-| `bDone` | `BOOL` | 保持完成或托模退完成状态置位；`Idle` 或复位清除 | 完成状态 |
+| `bBusy` | `BOOL` | 启动后置位；托模进分段完成分支、停止、保持完成、托模退完成、急停或错误时清除 | 工艺忙状态 |
+| `bDone` | `BOOL` | 保持完成或托模退完成分支置位；停止、错误和复位通过 `ClearStatus()` 清除 | 完成状态 |
 | `bAlarm` | `BOOL` | 无效模式、急停或错误状态置位；复位清除 | 报警状态 |
 | `dwAlarmID` | `DWORD` | 报警代码按位 OR 保持；复位清零 | 报警代码 |
 | `uiActHint` | `UINT` | 输出空闲、错误、托模进分段、保持或托模退分段提示 | 动作提示 |
 | `uiActTime` | `UINT` | 输出托模进/保持/托模退当前阶段累计调用值 | 动作时间 |
-| `bEjectIned` | `BOOL` | 托模保持完成时置位；`Idle` 或复位清除 | 托模进完成 |
-| `bEjectOuted` | `BOOL` | 托模退完成时置位；`Idle` 或复位清除 | 托模退完成 |
+| `bEjectIned` | `BOOL` | 托模保持完成分支置位；停止、错误和复位清除 | 托模进完成 |
+| `bEjectOuted` | `BOOL` | 托模退完成分支置位；停止、错误和复位清除 | 托模退完成 |
 | `stHydAxisCtrl` | `ST_HydAxisCtrl` | 调用末尾转存当前周期轴命令和内部 `FB_HydAxis` 状态 | 轴命令和轴状态包 |
 
 `stHydAxisCtrl.bBusy`、`bDone`、`bInVelocity`、`bInPressure`、`bAlarm` 和 `dwAlarmID` 来自内部 `FB_HydAxis`，与功能块本身的 `bBusy`、`bDone`、`bAlarm` 和 `dwAlarmID` 分属不同层级。工艺功能块报警代码和轴报警代码应分别读取，不应直接互换。
@@ -211,12 +212,12 @@
 
 ## 5. 调用规范和注意事项
 
-1. 在固定周期内每周期调用一次。托模进/退分段和托模保持每次活动调用将阶段计时和总计时各增加 `1`；分段时间和保持时间使用 `uiTime×100` 次调用比较，托模进/退总限时使用对应 `uiEject*LimitTime×100` 次调用比较。实际时间由任务调用周期决定，`uiActTime` 是当前阶段累计调用值而非独立系统时钟。
+1. 在固定周期内每周期调用一次。托模进/退分段和托模保持每次活动调用将阶段计时和总计时各增加 `1`；分段时间、保持时间和托模进/退总限时使用参数乘 `100` 次调用比较。实际时间由任务调用周期决定，`uiActTime` 是当前阶段累计调用值而非独立系统时钟；托模保持阶段没有单独的总限时判断。托模进/退限时判断与后续分段结束、完成判断不互斥，同一扫描中状态可能由后续逻辑改写，但报警位会保留。
 2. 调用顺序应为：先刷新 `stHydAxisRef`、托模进/退停止反馈、电子尺值、`uiEjectMode` 和 `stEjectPara`，再调用 `FB_EjectBase`，最后读取 `stHydAxisCtrl`、回写后的 `stHydAxisRef`、动作状态、完成状态和两层报警。轴功能块已在当前 POU 内部调用，调用者不应重复调用外部轴功能块。
-3. `uiEjectMode` 只允许 `1` 普通托模进、`2` 普通托模退、`3` 调模托模进或 `4` 调模托模退；其他值（含 `0`）在 `Init` 产生 `16#0002`。`uiEjectInSegCnt` 和 `uiEjectOutSegCnt` 是段数选择而不是最后下标：输入 `1..3` 分别换算为内部最后下标 `0..2`，大于 `3` 收口到 `2`，输入 `0` 仍会执行第 1 段。`uiEjectInMode`、`uiEjectOutMode` 应限定为 `0`、`1` 或 `2`；其他值没有独立报警，可能无法满足结束条件。调模分段的结束条件仍读取普通分段数组，`stEjectKeepDebug` 当前因调模流程跳过保持阶段而未读取；`stParaRef.udiPosToleranceValue` 也未读取。压力、速度、位置、时间、斜率、方向编码和电子尺单位需按受控轴协议确认。
-4. `bReset`、`bEStop`、`bStop` 和状态机的处理优先级为 `bReset` > `bEStop` > `bStop`/`bStart` 下降沿 > 状态机。`bStart` 仅在 `Idle` 状态的上升沿启动；正常停止回到 `Idle` 并清主要轴命令，完成状态在完成分支保持，下一次动作前应通过停止或复位回到 `Idle`。复位优先级高于急停，但急停保持有效时复位后会再次进入错误状态。
-5. `bBusy` 是工艺忙状态，`stHydAxisCtrl.bAxisStart` 是阶段启动窗口，`stHydAxisCtrl.uiAxisMode` 是轴命令模式，`stHydAxisCtrl.bBusy` 是内部液压轴忙状态，四者不可互相替代。托模进/退位置方式分别生成 `uiAxisMode=1`，时间/行程方式生成 `uiAxisMode=2`，保持阶段生成 `uiAxisMode=3`；托模进/退阶段在累计计时小于 `20` 次调用时将 `bAxisStart` 置位，保持阶段在保持计时未到时持续置位。斜率字段中，`uiAxisPresAcc`/`uiAxisPresDec` 只转存到 `stHydAxisCtrl`，内部 `FB_HydAxis` 当前接收速度加减速和 `uiAxisJerk`，其中 `uiAxisJerk` 没有可靠赋值来源；停止、保持完成、托模退完成、急停、错误和空闲分支清主要轴命令，托模进阶段完成分支的主要轴命令清零语句当前未执行；部分斜率字段可能保留上次值，不应在 `uiAxisMode=0` 时视为有效执行命令。
-6. 当前固定 `IF TRUE` 分支每周期执行内部 `FB_HydAxis`，`FB_EleAxis` 分支不会执行；托模进方向写 `2`、托模退方向写 `1`。功能块报警与轴报警按两层分别读取和汇总；当前停止反馈异常、电子尺异常、保持参数异常和轴反馈异常未映射为其他功能块报警。本功能块不替代独立急停、安全门/光幕、托模互锁、机械限位、轴故障处理或物理能量切断。
+3. `uiEjectMode` 只允许 `1` 普通托模进、`2` 普通托模退、`3` 调模托模进或 `4` 调模托模退；其他值（含 `0`）在 `Init` 产生 `16#0002`。`uiEjectInSegCnt` 和 `uiEjectOutSegCnt` 是段数选择而不是最后下标：输入 `1..3` 分别换算为内部最后下标 `0..2`，大于 `3` 收口到 `2`，输入 `0` 仍会访问并执行第 `0` 段。`uiEjectInMode`、`uiEjectOutMode` 应限定为 `0`、`1` 或 `2`；其他值没有独立报警，可能无法满足结束条件。调模模式下，分段结束判断仍读取普通分段数组的位置/时间字段；调模命令则读取对应 `stEjectInDebug`/`stEjectOutDebug`。调模托模进在完成分段后直接跳过保持态，因此 `stEjectKeepDebug` 当前不可达；`stParaRef.udiPosToleranceValue` 也未读取。压力、速度、位置、时间、斜率、方向编码和电子尺单位需按受控轴协议确认。
+4. `bReset`、`bEStop`、`bStop` 和状态机的处理优先级为 `bReset` > `bEStop` > `bStop`/`bStart` 下降沿 > 状态机。`bStart` 仅在 `Idle` 状态的上升沿启动；正常停止回到 `Idle` 并清主要轴命令、完成输出和方向完成输出。托模进分段完成态会先清 `bBusy`、`bAxisStart` 和 `uiAxisMode`，再根据调模模式或保持时间转入保持完成/保持中；保持完成和托模退完成分支置 `bDone` 与相应完成输出，并保持状态直到停止或复位。复位优先级高于急停，但急停保持有效时复位后会再次进入错误状态。
+5. `bBusy` 是工艺忙状态，`stHydAxisCtrl.bAxisStart` 是阶段启动信号，`stHydAxisCtrl.uiAxisMode` 是轴命令模式，`stHydAxisCtrl.bBusy` 是内部液压轴忙状态，四者不可互相替代。托模进/退位置方式生成 `uiAxisMode=1`，时间/行程方式生成 `uiAxisMode=2`，保持阶段生成 `uiAxisMode=3`。托模进/退阶段在累计计时 `>2` 且 `<20` 次调用时将 `bAxisStart` 置为 `TRUE`；位置方式在其他计数范围显式置为 `FALSE`，时间/行程方式在其他计数范围不重新赋值，可能保持上一周期值。斜率字段中，`uiAxisPresAcc`/`uiAxisPresDec` 只转存到 `stHydAxisCtrl`，内部 `FB_HydAxis` 接收速度加减速和 `uiAxisJerk`，其中 `uiAxisJerk` 仅由清零逻辑提供；托模进分段完成分支清 `bAxisStart`/`uiAxisMode`，但未执行被注释的压力、速度和位置清零语句。停止、保持完成、托模退完成、急停、错误和空闲分支通过 `ClearStatus()` 清主要轴命令，部分斜率字段可能保留上次值，不应在 `uiAxisMode=0` 时视为有效执行命令。
+6. 当前固定 `IF TRUE` 分支每周期执行内部 `FB_HydAxis`，`FB_EleAxis` 分支不会执行；托模进方向写 `1`、托模退方向写 `2`。功能块报警与轴报警按两层分别读取和汇总；当前停止反馈异常、电子尺异常、保持参数异常和轴反馈异常未映射为其他功能块报警。本功能块不替代独立急停、安全门/光幕、托模互锁、机械限位、轴故障处理或物理能量切断。
 
 ## 6. 外部交互边界
 

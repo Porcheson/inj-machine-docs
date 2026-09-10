@@ -4,7 +4,8 @@
 |---|---|
 | 模块名称 | `FB_CoreBase` |
 | 适用场景 | 注塑机中子进、中子退的单段工艺控制 |
-| 版本信息 | 文档版本 1.0；库版本 1.0.0；更新日期 2026-08-20 |
+| 版本信息 | 文档版本 1.1；库版本  `PlasticLibs` 1.0.26.908；更新日期 2026-09-10 |
+| 依赖库信息 | `HydTechnology` 0.1.1.0，提供 `FB_HydAxis`、`ST_HydAxisRef` 等液压轴相关类型和功能块|
 | 事实原则 | 以下描述以当前 ST 执行逻辑为准；注释与实际逻辑不一致时标注“需协议确认” |
 
 ## 1. 功能概述
@@ -16,16 +17,16 @@
 - 中子进和中子退；
 - 调模模式下的中子进和中子退；
 - 单段压力、速度、时间和计数参数；
-- 时间、数字停止反馈或调用计数三种结束方式；
+- 时间或数字停止反馈两种实际结束方式；
 - 普通模式和调模模式分别使用对应的工艺参数或调模参数；
-- 中子进/退完成状态、动作提示、报警状态和报警代码输出。
+- 中子进/退完成状态、动作提示、报警状态和报警代码输出。 
 
 ### 输入与输出
 
 | 调用者提供 | 功能块输出 |
 |---|---|
 | `bStart`、`bStop`、`bEStop`、`bReset`、`uiCoreMode` | `bBusy`、`bDone`、`bAlarm`、`dwAlarmID` |
-| `stCorePara` | `uiActHint`、`uiActTime`、`bCoreIned`、`bCoreOuted` |
+| `stCorePara`、`stParaRef` | `uiActHint`、`uiActTime`、`bCoreIned`、`bCoreOuted` |
 | `stHydAxisRef`、`bCoreInStop`、`bCoreOutStop` | `stHydAxisCtrl` 轴命令和轴状态包；`stHydAxisRef` 调用后回写 |
 
 ### 主要执行流程
@@ -35,7 +36,7 @@
   -> 按优先级处理复位、急停和正常停止
   -> Idle 接收 bStart 后进入 Init
   -> Init 设置方向并进入中子进或中子退
-  -> 单段执行：按时间、数字停止或计数结束
+  -> 单段执行：按时间或数字停止反馈结束；
   -> 达到限制时间或模式无效 -> Error
   -> 中子进完成或中子退完成保持完成状态
   -> 内部调用 FB_HydAxis，回写 stHydAxisRef 并转存轴命令和轴状态到 stHydAxisCtrl
@@ -73,10 +74,10 @@
 | 成员 | 类型 | 读写属性 | 用途 |
 |---|---|---|---|
 | `uiCoreFn` | `UINT` | 只读 | 中子功能启用选择 |
-| `uiCoreInStartMode` | `UINT` | 只读 | 中子进开始方式 |
+| `uiCoreInStartMode` | `UINT` | 只读 | 中子进开始方式： `0` 行程、`1` 位置 |
 | `uiCoreInStroke` | `UINT` | 只读 | 中子进开始行程 |
 | `udiCoreInPos` | `UDINT` | 只读 | 中子进开始位置 |
-| `uiCoreInStopMode` | `UINT` | 只读 | 中子进停止方式：0 时间，1 行程，2 计数 |
+| `uiCoreInStopMode` | `UINT` | 只读 | 中子进停止方式： `0` 时间、`1` 行程、`2` 计数 |
 | `uiCoreInLimitTime` | `UINT` | 只读 | 中子进限制时间 |
 | `stCoreInSeg` | `ST_CoreSeg` | 只读 | 中子进参数 |
 | `stCoreInDebug` | `ST_CoreSeg` | 只读 | 中子进调模参数 |
@@ -88,10 +89,10 @@
 | `uiCoreInPresStopGrad` | `UINT` | 只读 | 中子进压力停止斜率 |
 | `uiCoreInSpdStartGrad` | `UINT` | 只读 | 中子进速度启动斜率 |
 | `uiCoreInSpdStopGrad` | `UINT` | 只读 | 中子进速度停止斜率 |
-| `uiCoreOutStartMode` | `UINT` | 只读 | 中子退开始方式 |
+| `uiCoreOutStartMode` | `UINT` | 只读 | 中子退开始方式：`0` 行程、`1` 位置 |
 | `uiCoreOutStroke` | `UINT` | 只读 | 中子退开始行程 |
 | `udiCoreOutPos` | `UDINT` | 只读 | 中子退开始位置 |
-| `uiCoreOutStopMode` | `UINT` | 只读 | 中子退停止方式：0 时间，1 行程，2 计数 |
+| `uiCoreOutStopMode` | `UINT` | 只读 | 中子退停止方式： `0` 时间、`1` 行程、`2` 计数 |
 | `uiCoreOutLimitTime` | `UINT` | 只读 | 中子退限制时间 |
 | `stCoreOutSeg` | `ST_CoreSeg` | 只读 | 中子退参数 |
 | `stCoreOutDebug` | `ST_CoreSeg` | 只读 | 中子退调模参数 |
@@ -119,8 +120,8 @@
 | 成员 | 类型 | 读写属性 | 用途 |
 |---|---|---|---|
 | `bAxisStart` | `BOOL` | 只写 | 轴启动信号 |
-| `uiAxisDir` | `UINT` | 只写 | 轴方向值；中子进写 2，中子退写 1 |
-| `uiAxisMode` | `UINT` | 只写 | 轴控制模式：`1` 位置、`2` 速度、`3` 压力；本功能块设定 `2` |
+| `uiAxisDir` | `UINT` | 只写 | 轴方向值；中子进写 `1`，中子退写 `2` |
+| `uiAxisMode` | `UINT` | 只写 | 轴控制模式：`1` 位置、`2` 速度、`3` 压力 |
 | `uiPresCmd` | `UINT` | 只写 | 压力命令 |
 | `uiSpdCmd` | `UINT` | 只写 | 速度命令 |
 | `uiEndSpdCmd` | `UINT` | 只写 | 段结束速度 |
@@ -147,7 +148,7 @@
 | 名称 | 类型 | 当前行为 | 信号含义 |
 |---|---|---|---|
 | `stHydAxisRef` | `ST_HydAxisRef` | 传入内部 `FB_HydAxis`，调用后回写 | 液压轴参数引用参考 |
-| `stParaRef` | `ST_ParaRef` | 引用位置容差值 | 工艺参数引用参考 |
+| `stParaRef` | `ST_ParaRef` | 引用位置容差值 | 工艺参数引用 |
 
 ### 3.2 `VAR_INPUT`
 
@@ -167,13 +168,13 @@
 | 名称 | 类型 | 当前行为 | 信号含义 |
 |---|---|---|---|
 | `bBusy` | `BOOL` | 启动后置位；停止、完成、急停或错误状态清除 | 工艺忙状态 |
-| `bDone` | `BOOL` | 中子进或中子退完成状态置位；仅 Idle/复位清除 | 完成状态 |
+| `bDone` | `BOOL` | 停止、错误和复位清除；完成分支先执行 `ClearStatus()` 后再置位并保持 | 完成状态 |
 | `bAlarm` | `BOOL` | 无效模式、急停或错误状态置位；复位清除 | 报警状态 |
 | `dwAlarmID` | `DWORD` | 报警代码按位 OR 保持；复位清零 | 报警代码 |
 | `uiActHint` | `UINT` | 输出空闲、错误、中子进、中子退或完成提示 | 动作提示 |
 | `uiActTime` | `UINT` | 输出活动阶段累计调用值 | 动作时间 |
-| `bCoreIned` | `BOOL` | 中子进完成状态置位；Idle/复位清除 | 中子进完成 |
-| `bCoreOuted` | `BOOL` | 中子退完成状态置位；Idle/复位清除 | 中子退完成 |
+| `bCoreIned` | `BOOL` | 中子进完成状态置位；停止、错误和复位清除 | 中子进完成 |
+| `bCoreOuted` | `BOOL` | 中子退完成状态置位；停止、错误和复位清除 | 中子退完成 |
 | `stHydAxisCtrl` | `ST_HydAxisCtrl` | 调用末尾转存本地轴命令和内部 `FB_HydAxis` 状态 | 轴命令和轴状态包 |
 
 `stHydAxisCtrl.bBusy`、`bDone`、`bInVelocity`、`bInPressure`、`bAlarm` 和 `dwAlarmID` 来自内部 `FB_HydAxis`，与功能块本身的 `bBusy`、`bDone`、`bAlarm` 和 `dwAlarmID` 分属不同层级，外部读取和汇总时不得直接互换。
@@ -203,12 +204,12 @@
 
 ## 5. 调用规范和注意事项
 
-1. 在固定周期内每周期调用一次。当前逻辑每次活动阶段将阶段计时和总计时各加 `1`；时间停止使用对应 `uiTime×100` 次调用比较，计数停止直接使用对应 `uiCount` 次调用比较，方向限制时间使用对应 `uiCore*LimitTime×100` 次调用比较。实际时间由任务周期决定，`uiActTime` 是阶段累计调用值，不是独立系统时钟。
+1. 在固定周期内每周期调用一次。当前逻辑每次活动阶段将阶段计时和总计时各加 `1`；时间停止使用对应 `uiTime×100` 次调用比较，方向限制时间使用对应 `uiCore*LimitTime×100` 次调用比较。停止方式 `2` 的 `uiCount` 比较代码当前被注释，不能作为实际结束条件。实际时间由任务周期决定，`uiActTime` 是阶段累计调用值，不是独立系统时钟。
 2. 调用顺序应为：先准备 `stHydAxisRef`、停止反馈、`uiCoreMode` 和 `stCorePara`，调用 `FB_CoreBase`，再读取 `stHydAxisCtrl` 和回写后的 `stHydAxisRef`；`stParaRef` 当前未读取，轴功能块已在当前 POU 内部调用，调用者不应重复调用外部轴层。
-3. `uiCoreMode` 只允许 `1` 普通中子进、`2` 普通中子退、`3` 调模中子进或 `4` 调模中子退，其他值（含 `0`）会在 `Init` 产生 `16#0002`。`uiCoreInStopMode`、`uiCoreOutStopMode` 应限定为 `0`、`1` 或 `2`，分别对应时间、数字停止和单段计数；其他值没有独立报警，可能只能等待限制时间。
+3. `uiCoreMode` 只允许 `1` 普通中子进、`2` 普通中子退、`3` 调模中子进或 `4` 调模中子退，其他值（含 `0`）会在 `Init` 产生 `16#0002`。`uiCoreInStopMode`、`uiCoreOutStopMode` 当前只有 `0`（时间）和 `1`（数字停止）有实际分支；协议定义的 `2`（计数）以及其他值都没有独立报警，可能只能等待限制时间。
 4. `uiCoreFn`、各方向的开始方式、开始行程和开始位置字段当前未读取，不能用来阻止动作或形成位置起始条件。停止方式为 `0` 且对应普通段 `uiTime` 为 `0` 时，时间条件会立即成立；调模结构中的 `uiTime`、`uiCount` 当前未读取，也不参与结束判断，参数合法性由上层校验负责。
 5. `bStart` 只在 `Idle` 状态启动，完成状态保持在完成分支，下一次动作前应通过停止或复位回到 `Idle`。处理优先级为 `bReset` > `bEStop` > (`bStop` 或 `f_bStart.Q`) > 状态机；`bStop` 清主要轴命令并重置计时但不清报警码，且 `bStart` 下降沿会与 `bStop` 合并传给内部轴；`bReset` 清状态和报警并传给内部轴，急停保持有效时复位后会再次报警。
-6. 活动阶段 `stHydAxisCtrl.uiAxisMode` 为 `2`，`stHydAxisCtrl.bAxisStart` 是轴启动信号，`bBusy` 是工艺忙状态，`stHydAxisCtrl.bBusy` 是内部液压轴忙状态，三者不可互相替代。当前固定执行内部 `FB_HydAxis`，`FB_EleAxis` 分支不会执行；中子进方向写 `2`、中子退方向写 `1`，压力斜率只转存到 `stHydAxisCtrl`，速度斜率映射到内部轴的 `uiAcc`/`uiDec`，`udiPosCmd`、`uiEndSpdCmd` 和 `uiAxisJerk` 没有可靠赋值来源。方向编码、单位和 `ST_HydAxisRef` 结构须按受控轴协议确认；轴报警与功能块报警分层汇总，本功能块不替代独立急停、安全门/光幕、中子互锁、机械限位、轴故障处理或物理能量切断。
+6. 活动阶段 `stHydAxisCtrl.uiAxisMode` 为 `2`，`stHydAxisCtrl.bAxisStart` 是轴启动信号，`bBusy` 是工艺忙状态，`stHydAxisCtrl.bBusy` 是内部液压轴忙状态，三者不可互相替代。当前固定执行内部 `FB_HydAxis`，`FB_EleAxis` 分支不会执行；中子进方向写 `1`、中子退方向写 `2`，压力斜率只转存到 `stHydAxisCtrl`，速度斜率映射到内部轴的 `uiAcc`/`uiDec`，`udiPosCmd`、`uiEndSpdCmd` 没有本 POU 的工艺赋值，`uiAxisJerk` 在本 POU 内仅被清零后转存并传入轴。方向编码、单位和 `ST_HydAxisRef` 结构须按受控轴协议确认；轴报警与功能块报警分层汇总，本功能块不替代独立急停、安全门/光幕、中子互锁、机械限位、轴故障处理或物理能量切断。
 
 ## 6. 外部交互边界
 
